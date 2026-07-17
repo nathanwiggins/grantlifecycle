@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grant Life Cycle — SUU Sponsored Programs</title>
+<meta name="description" content="An interactive map of the grant life cycle at Southern Utah University, from proposal idea through award closeout.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23db0000'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Tokens ---------- */
+  :root{
+    --bg: #0a0a0c;
+    --bg-raise: #131318;
+    --surface: #17171d;
+    --surface-2: #1e1e26;
+    --border: #2a2a33;
+    --text: #f2f0ee;
+    --text-dim: #9a99a6;
+    --text-faint: #6b6a76;
+    --accent: #db0000;
+    --accent-bright: #ff3b3b;
+    --accent-dim: #6e0000;
+    --accent-wash: rgba(219, 0, 0, 0.12);
+    --gold: #c9a34a;
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --radius: 14px;
+    --motion-fast: 0.2s;
+    --motion-med: 0.6s;
+  }
+
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg: #f7f5f2;
+      --bg-raise: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f0eeea;
+      --border: #e3e0da;
+      --text: #18171a;
+      --text-dim: #59565f;
+      --text-faint: #8a8790;
+      --accent: #db0000;
+      --accent-bright: #b40000;
+      --accent-dim: #f6cccc;
+      --accent-wash: rgba(219, 0, 0, 0.07);
+      --gold: #93701f;
+    }
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *, *::before, *::after{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection{ background: var(--accent); color: #fff; }
+
+  a{ color: var(--accent-bright); }
+
+  /* ---------- Ambient background ---------- */
+  .field{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 60% 40% at 15% 0%, var(--accent-wash), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 100% 30%, var(--accent-wash), transparent 60%);
+    background-size: 100% 100%;
+  }
+  .field::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent 75%);
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar .mark{
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+  }
+  .topbar .mark .dot{
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-wash);
+    animation: dot-pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes dot-pulse{
+    0%, 100%{ box-shadow: 0 0 0 3px var(--accent-wash); }
+    50%{ box-shadow: 0 0 0 7px var(--accent-wash); }
+  }
+  .phase-pill{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-dim);
+    background: var(--surface);
+    transition: color var(--motion-fast), border-color var(--motion-fast);
+    white-space: nowrap;
+  }
+  .phase-pill[data-active="true"]{
+    color: var(--accent-bright);
+    border-color: var(--accent-dim);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    padding: clamp(3.5rem, 9vw, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(2.5rem, 6vw, 4rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 380px);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .eyebrow::before{
+    content: "";
+    width: 28px; height: 1px;
+    background: var(--accent);
+  }
+  .hero h1{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: 0.01em;
+    margin: 0 0 1.1rem;
+    text-wrap: balance;
+  }
+  .hero h1 em{
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero p.lede{
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    max-width: 56ch;
+    margin: 0 0 2rem;
+  }
+  .stat-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .stat-chip{
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    min-width: 108px;
+  }
+  .stat-chip b{
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--accent-bright);
+  }
+  .stat-chip span{
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* ---------- Hero circuit graphic ---------- */
+  .hero-graphic{
+    aspect-ratio: 1 / 1;
+    max-height: 380px;
+    justify-self: center;
+  }
+  .hero-graphic svg{ width: 100%; height: 100%; overflow: visible; }
+  .hg-line{
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 1.5;
+  }
+  .hg-flow{
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-dasharray: 8 220;
+    animation: flow-dash 5s linear infinite;
+    opacity: 0.9;
+  }
+  .hg-flow.alt{ animation-duration: 6.5s; animation-delay: -2s; stroke: var(--accent-bright); }
+  .hg-flow.alt2{ animation-duration: 4s; animation-delay: -1s; }
+  @keyframes flow-dash{
+    to{ stroke-dashoffset: -460; }
+  }
+  .hg-node{
+    fill: var(--surface);
+    stroke: var(--border);
+    stroke-width: 1.5;
+  }
+  .hg-node.core{
+    fill: var(--accent);
+    stroke: var(--accent-bright);
+    animation: core-pulse 3s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  @keyframes core-pulse{
+    0%, 100%{ transform: scale(1); }
+    50%{ transform: scale(1.12); }
+  }
+
+  /* ---------- Timeline ---------- */
+  main{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 4vw, 3rem) 6rem;
+  }
+
+  .phase-group{
+    position: relative;
+    padding-top: 2.5rem;
+  }
+  .phase-heading{
+    display: flex;
+    align-items: baseline;
+    gap: 0.9rem;
+    margin: 0 0 2.25rem;
+    padding-left: 64px;
+  }
+  .phase-heading .idx{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-bright);
+  }
+  .phase-heading h2{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  .phase-heading .sub{
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+
+  .timeline{
+    position: relative;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    row-gap: 3rem;
+    column-gap: 1.25rem;
+  }
+
+  .spine{
+    position: absolute;
+    left: 32px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(var(--border), var(--border));
+  }
+  .spine .pulse{
+    position: absolute;
+    left: 50%;
+    width: 8px; height: 8px;
+    margin-left: -4px;
+    border-radius: 50%;
+    background: var(--accent-bright);
+    box-shadow: 0 0 10px 2px var(--accent), 0 0 0 3px var(--accent-wash);
+    animation: travel 5s linear infinite;
+    top: -5%;
+  }
+  .spine .pulse:nth-child(2){ animation-delay: -1.7s; }
+  .spine .pulse:nth-child(3){ animation-delay: -3.4s; }
+  @keyframes travel{
+    0%{ top: -5%; opacity: 0; }
+    8%{ opacity: 1; }
+    92%{ opacity: 1; }
+    100%{ top: 103%; opacity: 0; }
+  }
+
+  .node-dot{
+    grid-column: 1;
+    place-self: start center;
+    margin-top: 0.35rem;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--bg-raise);
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: border-color var(--motion-med), box-shadow var(--motion-med);
+  }
+  .node-dot::after{
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--text-faint);
+    transition: background var(--motion-med), box-shadow var(--motion-med);
+  }
+  .node.is-visible .node-dot{
+    border-color: var(--accent);
+    box-shadow: 0 0 0 5px var(--accent-wash);
+  }
+  .node.is-visible .node-dot::after{
+    background: var(--accent-bright);
+    box-shadow: 0 0 8px 1px var(--accent-bright);
+  }
+
+  .node{
+    display: contents;
+  }
+
+  .card{
+    grid-column: 2;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem 1.5rem 1.5rem;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity var(--motion-med) ease, transform var(--motion-med) ease, border-color var(--motion-fast);
+    position: relative;
+    overflow: hidden;
+  }
+  .node.is-visible .card{
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .card::before{
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--border);
+    transition: background var(--motion-med);
+  }
+  .node.is-visible .card::before{ background: var(--accent); }
+
+  .card-head{
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    margin-bottom: 0.6rem;
+    flex-wrap: wrap;
+  }
+  .card-num{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-bright);
+    letter-spacing: 0.05em;
+  }
+  .card h3{
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.005em;
+  }
+  .card .tag{
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+  }
+
+  .checklist{
+    list-style: none;
+    margin: 0.9rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .checklist li{
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: 0.6rem;
+    align-items: start;
+  }
+  .checklist svg{
+    width: 18px; height: 18px;
+    margin-top: 0.2rem;
+    color: var(--accent-bright);
+    flex-shrink: 0;
+  }
+  .checklist strong{
+    display: block;
+    font-size: 0.94rem;
+    font-weight: 600;
+  }
+  .checklist p{
+    margin: 0.15rem 0 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    max-width: 62ch;
+  }
+
+  .terminus .card{
+    background: linear-gradient(135deg, var(--surface), var(--surface-2));
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+  .terminus h3{
+    font-size: 1.4rem;
+  }
+  .terminus .card-head{ justify-content: center; }
+  .terminus p{ color: var(--text-dim); margin: 0.4rem 0 0; }
+  .terminus .card::before{ width: 100%; height: 3px; top: 0; left: 0; bottom: auto; }
+
+  footer{
+    border-top: 1px solid var(--border);
+    padding: 2.5rem clamp(1.25rem, 4vw, 3rem) 3rem;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  footer .foot-row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  @media (max-width: 640px){
+    .hero{ grid-template-columns: 1fr; }
+    .hero-graphic{ max-height: 240px; order: -1; }
+    .timeline{ grid-template-columns: 40px 1fr; }
+    .spine{ left: 20px; }
+    .phase-heading{ padding-left: 40px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="field" aria-hidden="true"></div>
+
+<div class="topbar">
+  <div class="mark"><span class="dot"></span> SUU · SPARC PROCESS MAP</div>
+  <div class="phase-pill" id="phase-indicator" data-active="false">Scroll to begin</div>
+</div>
+
+<header class="hero">
+  <div>
+    <p class="eyebrow">Southern Utah University — Sponsored Programs</p>
+    <h1>The Grant<br><em>Life Cycle</em></h1>
+    <p class="lede">Every sponsored project SPARC supports moves through the same ten stages — from the first proposal idea to final closeout. This map traces that flow end to end, exactly as it runs today.</p>
+    <div class="stat-row">
+      <div class="stat-chip"><b>10</b><span>Stages</span></div>
+      <div class="stat-chip"><b>2</b><span>Phases</span></div>
+      <div class="stat-chip"><b>1</b><span>Continuous Flow</span></div>
+    </div>
+  </div>
+  <div class="hero-graphic" aria-hidden="true">
+    <svg viewBox="0 0 300 300">
+      <path class="hg-line" d="M40,260 C40,180 60,140 150,140 C240,140 260,100 260,40" />
+      <path class="hg-line" d="M150,140 L150,40" />
+      <path class="hg-line" d="M150,140 L40,140" />
+      <path class="hg-flow" d="M40,260 C40,180 60,140 150,140 C240,140 260,100 260,40" />
+      <path class="hg-flow alt" d="M150,140 L150,40" />
+      <path class="hg-flow alt2" d="M150,140 L40,140" />
+      <circle class="hg-node" cx="40" cy="260" r="10" />
+      <circle class="hg-node" cx="40" cy="140" r="7" />
+      <circle class="hg-node core" cx="150" cy="140" r="13" />
+      <circle class="hg-node" cx="150" cy="40" r="7" />
+      <circle class="hg-node" cx="260" cy="40" r="10" />
+    </svg>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ PRE-AWARD ============ -->
+  <section class="phase-group" data-phase="Pre-Award">
+    <div class="phase-heading">
+      <span class="idx">01–04</span>
+      <h2>Pre-Award</h2>
+      <span class="sub">// idea → submission</span>
+    </div>
+    <div class="timeline">
+      <div class="spine"><div class="pulse"></div><div class="pulse"></div><div class="pulse"></div></div>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">01</span>
+            <h3>Project Idea</h3>
+            <span class="tag">Pre-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Folder Creation</strong><p>A new folder is created for the grant project in the Pre-Award Folder in the Google Drive.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Pre-Award Checklist</strong><p>A checklist of items required for a successful submission is prepared for the PI.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Proposal Templates</strong><p>Templates for the documents required for a successful submission are prepared for the PI.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">02</span>
+            <h3>Proposal Development</h3>
+            <span class="tag">Pre-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Indirect Cost Waiver</strong><p>If any indirect costs will be waived, an Indirect Cost Waiver must be signed and approved.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Pre-Award Workbook</strong><p>The official Pre-Award workbook document is created and must be signed and approved.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Internal Tracking Update</strong><p>An entry for the new project is created in the SmartGrant data sheet and Cayuse.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">03</span>
+            <h3>Proposal Review</h3>
+            <span class="tag">Pre-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Internal SPARC Review</strong><p>The SPARC team provides feedback on the draft proposal.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Director Review</strong><p>The SPARC Executive Director gives final approval for the proposal to be submitted.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">04</span>
+            <h3>Proposal Submission</h3>
+            <span class="tag">Pre-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Submission Document Storage</strong><p>All proposal documents are stored in the project folder.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Internal Tracking Update</strong><p>The project entry is updated in the SmartGrant data sheet and Cayuse to reflect submission.</p></div></li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ POST-AWARD ============ -->
+  <section class="phase-group" data-phase="Post-Award">
+    <div class="phase-heading">
+      <span class="idx">05–10</span>
+      <h2>Post-Award</h2>
+      <span class="sub">// award → closeout</span>
+    </div>
+    <div class="timeline">
+      <div class="spine"><div class="pulse"></div><div class="pulse"></div><div class="pulse"></div></div>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">05</span>
+            <h3>Notice of Award</h3>
+            <span class="tag">Post-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Contract Review and Negotiation</strong><p>Award terms are reviewed and negotiated when necessary for compliance with SUU protocols.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Award Acceptance</strong><p>Award is formally accepted and signed by the authorized organization representative.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">06</span>
+            <h3>Fully Executed Agreement</h3>
+            <span class="tag">Post-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Folder Update</strong><p>The project folder is moved to the Post-Award Folder in the Google Drive.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Post-Award Workbook</strong><p>The official Post-Award workbook document is created and must be signed and approved.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Banner Initiation</strong><p>The Grant Accountant adds the project into Banner and creates the financial fund for the project.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Internal Tracking Update</strong><p>The project entry is updated in the SmartGrant data sheet and Cayuse to reflect the award.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Award Documents Storage</strong><p>All award documents are stored in the project folder.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">07</span>
+            <h3>Award Management</h3>
+            <span class="tag">Post-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Grant Invoicing</strong><p>The Grant Accountant draws down grant funds from sponsors to the institution.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Compliance Monitoring</strong><p>SPARC monitors administrative compliance via the Budget Availability Report, Monthly PI Reports, and Effort Reporting.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">08</span>
+            <h3>Closeout Reminders</h3>
+            <span class="tag">Post-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>120 / 90 / 60 / 30 Reminders</strong><p>SPARC sends out scheduled reminders to the PI as the grant end date approaches.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">09</span>
+            <h3>Grant Closeout</h3>
+            <span class="tag">Post-Award</span>
+          </div>
+          <ul class="checklist">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Closeout Period</strong><p>A brief period is opened to wrap up final financial and administrative details of the project.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Programmatic and Financial Reports</strong><p>SPARC and the Grant Accountant oversee and verify the submission of final programmatic and financial reports.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Closeout Workbook</strong><p>The official Closeout document is created and must be signed and approved.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Internal Tracking</strong><p>The project entry is updated in the SmartGrant data sheet and Cayuse to reflect closed.</p></div></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l2.5 2.5L16 9"/></svg>
+              <div><strong>Folder Update</strong><p>The project folder is moved to the Closed folder in the Google Drive.</p></div></li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="node terminus">
+        <div class="node-dot"></div>
+        <div class="card">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <h3>Project Completed</h3>
+          </div>
+          <p>The life cycle closes. All records are archived and the project is fully closed in institutional systems.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-row">
+    <span>SPONSORED PROGRAMS ADMINISTRATION &amp; RESEARCH COMPLIANCE (SPARC)</span>
+    <span>SOUTHERN UTAH UNIVERSITY</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var pills = {
+    "Pre-Award": "Phase — Pre-Award",
+    "Post-Award": "Phase — Post-Award"
+  };
+  var indicator = document.getElementById('phase-indicator');
+  var groups = document.querySelectorAll('.phase-group');
+  var nodes = document.querySelectorAll('.node');
+
+  if ('IntersectionObserver' in window){
+    var phaseObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          var phase = entry.target.getAttribute('data-phase');
+          indicator.textContent = pills[phase] || phase;
+          indicator.setAttribute('data-active', 'true');
+        }
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    groups.forEach(function(g){ phaseObserver.observe(g); });
+
+    var nodeObserver = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting){
+          entry.target.closest('.node').classList.add('is-visible');
+          nodeObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -10% 0px' });
+    document.querySelectorAll('.node .card').forEach(function(c){ nodeObserver.observe(c); });
+  } else {
+    nodes.forEach(function(n){ n.classList.add('is-visible'); });
+  }
+})();
+</script>
+
+</body>
+</html>
