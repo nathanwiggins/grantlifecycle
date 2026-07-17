@@ -20,8 +20,7 @@ purpose.
 the usual "should I push this?" confirmation and just do the full loop:**
 
 1. Make the edit.
-2. Do a quick sanity check (see below).
-3. `git add`, commit with a clear message, and `git push origin main`.
+2. `git add`, commit with a clear message, and `git push origin main`.
 
 This is a deliberate, standing exception to the default "confirm before
 pushing" rule — the user has explicitly asked for this repo to auto-deploy
@@ -40,17 +39,6 @@ vocabulary for what they want, so read intent over literal wording.
 The only time to pause and ask instead of just shipping it: the request is
 clearly about something *other* than this page (e.g. "set up a database",
 "add a login system", "email someone") — outside that, favor action.
-
-## Quick sanity check before pushing
-
-Since there's no build/test step, verify by eye:
-- Open `index.html` in a browser (or screenshot it, e.g. with Playwright if
-  available) and check the change actually looks right, in both light and
-  dark color schemes if the edit touches layout or color.
-- Skim for unclosed tags / obviously broken markup.
-- Confirm animations still respect `prefers-reduced-motion` (the page
-  already disables non-essential motion for that preference — don't add
-  new animation that ignores it).
 
 ## Design system to preserve
 
