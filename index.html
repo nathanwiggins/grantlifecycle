@@ -227,6 +227,31 @@
     color: var(--text-faint);
   }
 
+  .plan-link{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.1rem;
+    border: 1px solid var(--accent-dim);
+    border-radius: 10px;
+    background: var(--accent-wash);
+    color: var(--text);
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: border-color var(--motion-fast);
+  }
+  .plan-link .arr{
+    color: var(--accent-bright);
+    transition: transform var(--motion-fast);
+  }
+  .plan-link:hover,
+  .plan-link:focus-visible{ border-color: var(--accent); }
+  .plan-link:hover .arr{ transform: translateX(3px); }
+
   /* ---------- Hero circuit graphic ---------- */
   .hero-graphic{
     position: relative;
@@ -573,6 +598,7 @@
       <div class="stat-chip"><b>2</b><span>Phases</span></div>
       <div class="stat-chip"><b>1</b><span>Continuous Flow</span></div>
     </div>
+    <a class="plan-link" href="plan.html">See the SPARC Data system plan <span class="arr" aria-hidden="true">→</span></a>
   </div>
   <div class="hero-graphic" aria-hidden="true">
     <svg viewBox="0 0 300 300">

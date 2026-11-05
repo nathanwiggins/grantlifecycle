@@ -1,0 +1,1144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPARC Data Plan — SUU Sponsored Programs</title>
+<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system connects to Banner, Google Sheets, Google Drive, Routing and the BAR Report, who is building it, and the values guiding it.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23db0000'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- Tokens ---------- */
+  :root{
+    --bg: #0a0a0c;
+    --bg-raise: #131318;
+    --surface: #17171d;
+    --surface-2: #1e1e26;
+    --panel: #0f0f13;
+    --border: #2a2a33;
+    --text: #f2f0ee;
+    --text-dim: #9a99a6;
+    --text-faint: #6b6a76;
+    --accent: #db0000;
+    --accent-bright: #ff3b3b;
+    --accent-dim: #6e0000;
+    --accent-wash: rgba(219, 0, 0, 0.12);
+    --font-display: 'Orbitron', sans-serif;
+    --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+    --radius: 14px;
+    --motion-fast: 0.2s;
+    --motion-med: 0.6s;
+  }
+
+  @media (prefers-color-scheme: light){
+    :root{
+      --bg: #f7f5f2;
+      --bg-raise: #ffffff;
+      --surface: #ffffff;
+      --surface-2: #f0eeea;
+      --panel: #efece7;
+      --border: #e3e0da;
+      --text: #18171a;
+      --text-dim: #59565f;
+      --text-faint: #8a8790;
+      --accent: #db0000;
+      --accent-bright: #b40000;
+      --accent-dim: #f6cccc;
+      --accent-wash: rgba(219, 0, 0, 0.07);
+    }
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *, *::before, *::after{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+    .flow{ display: none; }
+  }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection{ background: var(--accent); color: #fff; }
+
+  a{ color: var(--accent-bright); }
+
+  /* ---------- Ambient background ---------- */
+  .field{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(ellipse 60% 40% at 15% 0%, var(--accent-wash), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 100% 30%, var(--accent-wash), transparent 60%);
+  }
+  .field::after{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.35;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 0%, black, transparent 75%);
+  }
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar .mark{
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    text-decoration: none;
+  }
+  .topbar .mark .plate{
+    background: #fff;
+    border-radius: 26px;
+    padding: 1.2rem 2.2rem;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+  .topbar .mark .plate img{
+    height: 100%;
+    width: auto;
+    display: block;
+  }
+  .topbar .mark span.label{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .nav-pill{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-dim);
+    background: var(--surface);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--motion-fast), border-color var(--motion-fast);
+  }
+  .nav-pill:hover,
+  .nav-pill:focus-visible{
+    color: var(--accent-bright);
+    border-color: var(--accent-dim);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position: relative;
+    padding: clamp(3.5rem, 9vw, 7rem) clamp(1.25rem, 4vw, 3rem) clamp(2rem, 5vw, 3rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 360px);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  .eyebrow{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .eyebrow::before{
+    content: "";
+    width: 28px; height: 1px;
+    background: var(--accent);
+  }
+  .hero h1{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    line-height: 1.02;
+    letter-spacing: 0.01em;
+    margin: 0 0 1.1rem;
+    text-wrap: balance;
+  }
+  .hero h1 em{
+    font-style: normal;
+    color: var(--accent);
+  }
+  .hero p.lede{
+    font-size: 1.08rem;
+    color: var(--text-dim);
+    max-width: 56ch;
+    margin: 0 0 2rem;
+  }
+  .stat-row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .stat-chip{
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    min-width: 108px;
+  }
+  .stat-chip b{
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--accent-bright);
+  }
+  .stat-chip span{
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  /* ---------- Hero hub graphic ---------- */
+  .hero-graphic{
+    position: relative;
+    aspect-ratio: 1 / 1;
+    width: 100%;
+    max-height: 360px;
+    justify-self: center;
+  }
+  .hero-graphic svg{ width: 100%; height: 100%; overflow: visible; }
+  .hg-ring{
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 1.5;
+    stroke-dasharray: 3 7;
+    transform-origin: 150px 150px;
+    animation: spin 60s linear infinite;
+  }
+  @keyframes spin{ to{ transform: rotate(360deg); } }
+  .hg-line{
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 1.5;
+  }
+  .hg-node{
+    fill: var(--surface);
+    stroke: var(--border);
+    stroke-width: 1.5;
+  }
+  .hg-node.core{
+    fill: var(--accent);
+    stroke: var(--accent-bright);
+    animation: core-pulse 3s ease-in-out infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  @keyframes core-pulse{
+    0%, 100%{ transform: scale(1); }
+    50%{ transform: scale(1.1); }
+  }
+
+  /* Travelling data dots (shared by hero + system map) */
+  .flow{
+    fill: none;
+    stroke: var(--accent-bright);
+    stroke-width: 6;
+    stroke-linecap: round;
+    stroke-dasharray: 0.1 100;
+    animation: travel-dot 3s linear infinite;
+  }
+  .flow.rev{ animation-direction: reverse; }
+  .flow.d1{ animation-delay: -0.6s; }
+  .flow.d2{ animation-delay: -1.2s; }
+  .flow.d3{ animation-delay: -1.8s; }
+  .flow.d4{ animation-delay: -2.4s; }
+  @keyframes travel-dot{
+    from{ stroke-dashoffset: 0; }
+    to{ stroke-dashoffset: -100; }
+  }
+
+  /* ---------- Sections ---------- */
+  main{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 clamp(1.25rem, 4vw, 3rem) 6rem;
+  }
+  .block{
+    padding-top: clamp(2.5rem, 6vw, 4rem);
+  }
+  .block-heading{
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+    margin: 0 0 0.75rem;
+  }
+  .block-heading .idx{
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent-bright);
+  }
+  .block-heading h2{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  .block-heading .sub{
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-faint);
+  }
+  .block-intro{
+    color: var(--text-dim);
+    max-width: 64ch;
+    margin: 0 0 1.75rem;
+  }
+
+  /* Scroll reveal (only when JS is running, so content is never hidden without it) */
+  .js .reveal{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity var(--motion-med) ease, transform var(--motion-med) ease;
+  }
+  .js .reveal.is-in{
+    opacity: 1;
+    transform: none;
+  }
+
+  /* ---------- System map ---------- */
+  .map-panel{
+    position: relative;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: clamp(1rem, 3vw, 2rem);
+    overflow: hidden;
+  }
+  .map-panel::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--border) 1px, transparent 1.4px);
+    background-size: 22px 22px;
+    opacity: 0.7;
+    pointer-events: none;
+  }
+  .map{
+    position: relative;
+    display: block;
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+  .map-narrow{ display: none; }
+  @media (max-width: 720px){
+    .map-wide{ display: none; }
+    .map-narrow{ display: block; max-width: 440px; margin: 0 auto; }
+  }
+
+  .n-box{ fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+  .n-box.human{ stroke: var(--accent); stroke-dasharray: 4 4; }
+  .n-ic-bg{ fill: var(--accent-wash); }
+  .ic{ color: var(--accent-bright); }
+  .n-title{ font-family: var(--font-body); font-weight: 600; font-size: 16px; fill: var(--text); }
+  .n-title.sm{ font-size: 14px; }
+  .n-sub, .edge-label, .sys-meta{
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    fill: var(--text-faint);
+  }
+  .sys-meta{ fill: var(--text-dim); }
+  .sys-box{ fill: var(--surface-2); stroke: var(--accent); stroke-width: 2; }
+  .sys-halo{
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 10;
+    opacity: 0.12;
+    animation: halo 3.2s ease-in-out infinite;
+  }
+  @keyframes halo{
+    0%, 100%{ opacity: 0.05; }
+    50%{ opacity: 0.2; }
+  }
+  .sys-eyebrow{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    fill: var(--accent-bright);
+  }
+  .sys-title{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: 0.04em;
+    fill: var(--text);
+  }
+  .sys-title.accent{ fill: var(--accent); }
+  .sys-rule{ stroke: var(--border); stroke-width: 1; }
+  .edge{ fill: none; stroke: var(--text-faint); stroke-width: 1.5; }
+  .edge.link{ stroke-dasharray: 5 5; }
+  .arrowhead{ fill: var(--text-dim); }
+  .link-badge{ fill: var(--panel); stroke: var(--border); stroke-width: 1.5; }
+
+  .conn-list{
+    list-style: none;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+  .conn-list li{
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 0.9rem;
+    align-items: start;
+    padding: 1rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .conn-list li.wide{ grid-column: 1 / -1; }
+  .conn-glyph{
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9px;
+    background: var(--accent-wash);
+    color: var(--accent-bright);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+  .conn-glyph svg{ width: 18px; height: 18px; }
+  .conn-list strong{
+    display: block;
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .conn-list p{
+    margin: 0.2rem 0 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 720px){
+    .conn-list{ grid-template-columns: 1fr; }
+  }
+
+  /* ---------- Teams ---------- */
+  .teams{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  @media (max-width: 860px){
+    .teams{ grid-template-columns: 1fr; }
+  }
+  .team{
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.6rem 1.6rem 1.75rem;
+  }
+  .team::before{
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .team-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .team h3{
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.01em;
+  }
+  .team-tag{
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+  }
+  .k{
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.45rem;
+  }
+  .names{
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.02rem;
+  }
+  .names i{
+    font-style: normal;
+    font-family: var(--font-mono);
+    color: var(--accent-bright);
+    margin: 0 0.35rem;
+  }
+  .core{
+    border-left: 2px solid var(--accent);
+    padding-left: 1rem;
+  }
+  .core-line{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    margin: 0 0 0.5rem;
+  }
+  .core p:not(.core-line){
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 0.94rem;
+  }
+  .chips{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+  }
+  .chips li{
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-dim);
+    background: var(--surface-2);
+  }
+  .pipeline{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
+  .pipeline li{
+    position: relative;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 0.85rem;
+  }
+  .pipeline b{
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 0.76rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+  }
+  .pipeline span{
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: var(--text-dim);
+  }
+  .pipeline li:not(:last-child)::after{
+    content: "→";
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    right: -0.9rem;
+    transform: translateY(-50%);
+    width: 1.1rem;
+    height: 1.1rem;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--accent-bright);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 520px){
+    .pipeline{ grid-template-columns: 1fr; }
+    .pipeline li:not(:last-child)::after{
+      content: "↓";
+      top: auto;
+      right: auto;
+      left: 50%;
+      bottom: -0.9rem;
+      transform: translateX(-50%);
+    }
+  }
+
+  /* ---------- Values ---------- */
+  .values{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border);
+  }
+  .values li{
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: clamp(0.9rem, 2.2vw, 1.35rem) 0.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .v-idx{
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--accent-bright);
+  }
+  .v-word{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.2rem, 5.4vw, 3rem);
+    line-height: 1.05;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    transition: color var(--motion-fast);
+  }
+  .v-mark{
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    transition: background var(--motion-fast), border-color var(--motion-fast), box-shadow var(--motion-fast);
+  }
+  .values li:hover .v-word{ color: var(--accent); }
+  .values li:hover .v-mark{
+    background: var(--accent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 5px var(--accent-wash);
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top: 1px solid var(--border);
+    padding: 2.5rem clamp(1.25rem, 4vw, 3rem) 3rem;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+  footer .foot-row{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+  .foot-credit{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .foot-credit img{
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+
+  @media (max-width: 640px){
+    .hero{ grid-template-columns: 1fr; }
+    .hero-graphic{ max-height: 220px; max-width: 220px; order: -1; }
+    .topbar{ padding: 0.6rem 1rem; gap: 0.5rem; }
+    .topbar .mark .plate{ height: 40px; padding: 0.4rem 0.7rem; border-radius: 10px; }
+    .topbar .mark span.label{ display: none; }
+    .nav-pill{ font-size: 0.62rem; padding: 0.35rem 0.6rem; }
+    .team{ padding: 1.35rem 1.2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="field" aria-hidden="true"></div>
+
+<!-- Shared icon set for the diagrams -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>
+  </symbol>
+  <symbol id="i-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="7" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+  </symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/>
+  </symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+  </symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 6.5A2.5 2.5 0 0 1 5.5 4H9l2 2.5h7.5A2.5 2.5 0 0 1 21 9v8.5a2.5 2.5 0 0 1-2.5 2.5h-13A2.5 2.5 0 0 1 3 17.5z"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/>
+  </symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M14 3H6.5A2.5 2.5 0 0 0 4 5.5v13A2.5 2.5 0 0 0 6.5 21h11a2.5 2.5 0 0 0 2.5-2.5V9z"/><path d="M14 3v6h6"/><path d="M8 13h8M8 17h5"/>
+  </symbol>
+  <symbol id="i-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 14a4 4 0 0 0 5.66 0l3-3a4 4 0 0 0-5.66-5.66l-1 1"/><path d="M14 10a4 4 0 0 0-5.66 0l-3 3a4 4 0 0 0 5.66 5.66l1-1"/>
+  </symbol>
+  <symbol id="i-sys" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
+  </symbol>
+</svg>
+
+<div class="topbar">
+  <a class="mark" href="index.html">
+    <span class="plate"><img src="assets/sparc-logo.png" alt="SUU Sponsored Programs, Agreements, Research & Contracts"></span>
+    <span class="label">SPARC Data Plan</span>
+  </a>
+  <a class="nav-pill" href="index.html">← Life Cycle Map</a>
+</div>
+
+<header class="hero">
+  <div>
+    <p class="eyebrow">SPARC — System Planning</p>
+    <h1>SPARC <em>Data</em></h1>
+    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the two teams building it, and the five values we're holding it to.</p>
+    <div class="stat-row">
+      <div class="stat-chip"><b>1</b><span>System</span></div>
+      <div class="stat-chip"><b>2</b><span>Teams</span></div>
+      <div class="stat-chip"><b>5</b><span>Values</span></div>
+    </div>
+  </div>
+  <div class="hero-graphic" aria-hidden="true">
+    <svg viewBox="0 0 300 300">
+      <circle class="hg-ring" cx="150" cy="150" r="105"/>
+      <path class="hg-line" d="M150,150 L255,150"/>
+      <path class="hg-line" d="M150,150 L202.5,59.1"/>
+      <path class="hg-line" d="M150,150 L97.5,59.1"/>
+      <path class="hg-line" d="M150,150 L45,150"/>
+      <path class="hg-line" d="M150,150 L97.5,240.9"/>
+      <path class="hg-line" d="M150,150 L202.5,240.9"/>
+      <path class="flow" pathLength="100" d="M150,150 L255,150"/>
+      <path class="flow rev d2" pathLength="100" d="M150,150 L202.5,59.1"/>
+      <path class="flow d1" pathLength="100" d="M150,150 L97.5,59.1"/>
+      <path class="flow rev d3" pathLength="100" d="M150,150 L45,150"/>
+      <path class="flow d4" pathLength="100" d="M150,150 L97.5,240.9"/>
+      <path class="flow rev d1" pathLength="100" d="M150,150 L202.5,240.9"/>
+      <circle class="hg-node" cx="255" cy="150" r="9"/>
+      <circle class="hg-node" cx="202.5" cy="59.1" r="9"/>
+      <circle class="hg-node" cx="97.5" cy="59.1" r="9"/>
+      <circle class="hg-node" cx="45" cy="150" r="9"/>
+      <circle class="hg-node" cx="97.5" cy="240.9" r="9"/>
+      <circle class="hg-node" cx="202.5" cy="240.9" r="9"/>
+      <rect class="hg-node core" x="128" y="128" width="44" height="44" rx="10"/>
+    </svg>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ SYSTEM MAP ============ -->
+  <section class="block" id="system">
+    <div class="block-heading">
+      <span class="idx">01</span>
+      <h2>The System</h2>
+      <span class="sub">// how the data moves</span>
+    </div>
+    <p class="block-intro">One new system at the center, connected to the tools SPARC already works in. Arrows show which way data flows. The moving dots trace it in real time.</p>
+
+    <div class="map-panel reveal">
+      <!-- Wide layout -->
+      <svg class="map map-wide" viewBox="0 0 1000 500" role="img" aria-labelledby="mapw-t mapw-d">
+        <title id="mapw-t">SPARC Data system map</title>
+        <desc id="mapw-d">Data from Banner passes through a human step before it reaches the new SPARC Data system. Banner also feeds the existing BAR Report, which the system links to. The system exchanges data in both directions with Google Sheets, Google Drive and Routing, and produces PDFs as output.</desc>
+        <defs>
+          <marker id="ahw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+        </defs>
+
+        <!-- connections -->
+        <path class="edge" d="M230,108 H302" marker-end="url(#ahw)"/>
+        <path class="edge" d="M358,108 H430" marker-end="url(#ahw)"/>
+        <path class="edge" d="M130,156 V340" marker-end="url(#ahw)"/>
+        <path class="edge link" d="M230,388 H430"/>
+        <path class="edge" d="M640,94 H760" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
+        <path class="edge" d="M640,204 H760" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
+        <path class="edge" d="M640,314 H760" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
+        <path class="edge" d="M640,424 H760" marker-end="url(#ahw)"/>
+
+        <!-- moving data -->
+        <path class="flow" pathLength="100" d="M230,108 H302"/>
+        <path class="flow d3" pathLength="100" d="M358,108 H430"/>
+        <path class="flow d1" pathLength="100" d="M130,156 V340"/>
+        <path class="flow" pathLength="100" d="M640,94 H760"/>
+        <path class="flow rev d3" pathLength="100" d="M640,94 H760"/>
+        <path class="flow d1" pathLength="100" d="M640,204 H760"/>
+        <path class="flow rev d4" pathLength="100" d="M640,204 H760"/>
+        <path class="flow d2" pathLength="100" d="M640,314 H760"/>
+        <path class="flow rev" pathLength="100" d="M640,314 H760"/>
+        <path class="flow d3" pathLength="100" d="M640,424 H760"/>
+
+        <!-- edge annotations -->
+        <text class="edge-label" x="144" y="242">BAR ALSO PULLS</text>
+        <text class="edge-label" x="144" y="257">FROM BANNER</text>
+        <circle class="link-badge" cx="330" cy="388" r="16"/>
+        <use class="ic" href="#i-link" x="320" y="378" width="20" height="20"/>
+        <text class="edge-label" x="330" y="426" text-anchor="middle">LINKED</text>
+
+        <!-- Banner -->
+        <rect class="n-box" x="30" y="60" width="200" height="96" rx="12"/>
+        <rect class="n-ic-bg" x="46" y="88" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-db" x="54" y="96" width="24" height="24"/>
+        <text class="n-title" x="100" y="104">Banner</text>
+        <text class="n-sub" x="100" y="123">SOURCE DATA</text>
+
+        <!-- Human step -->
+        <circle class="n-box human" cx="330" cy="108" r="28"/>
+        <use class="ic" href="#i-person" x="318" y="96" width="24" height="24"/>
+        <text class="n-title sm" x="330" y="160" text-anchor="middle">Human step</text>
+        <text class="n-sub" x="330" y="177" text-anchor="middle">NO DIRECT IMPORT</text>
+
+        <!-- BAR Report -->
+        <rect class="n-box" x="30" y="340" width="200" height="96" rx="12"/>
+        <rect class="n-ic-bg" x="46" y="368" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-globe" x="54" y="376" width="24" height="24"/>
+        <text class="n-title" x="100" y="384">BAR Report</text>
+        <text class="n-sub" x="100" y="403">EXISTING TOOL</text>
+
+        <!-- System -->
+        <rect class="sys-halo" x="430" y="44" width="210" height="430" rx="16"/>
+        <rect class="sys-box" x="430" y="44" width="210" height="430" rx="16"/>
+        <rect class="n-ic-bg" x="511" y="150" width="48" height="48" rx="12"/>
+        <use class="ic" href="#i-sys" x="521" y="160" width="28" height="28"/>
+        <text class="sys-eyebrow" x="535" y="232" text-anchor="middle">THE NEW SYSTEM</text>
+        <text class="sys-title" x="535" y="270" text-anchor="middle">SPARC</text>
+        <text class="sys-title accent" x="535" y="302" text-anchor="middle">DATA</text>
+        <line class="sys-rule" x1="462" y1="372" x2="608" y2="372"/>
+        <text class="sys-meta" x="535" y="396" text-anchor="middle">PUT · ORGANIZE · FETCH</text>
+
+        <!-- Google Sheets -->
+        <rect class="n-box" x="760" y="52" width="210" height="84" rx="12"/>
+        <rect class="n-ic-bg" x="776" y="74" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-grid" x="784" y="82" width="24" height="24"/>
+        <text class="n-title" x="830" y="90">Google Sheets</text>
+        <text class="n-sub" x="830" y="109">TWO-WAY</text>
+
+        <!-- Google Drive -->
+        <rect class="n-box" x="760" y="162" width="210" height="84" rx="12"/>
+        <rect class="n-ic-bg" x="776" y="184" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-folder" x="784" y="192" width="24" height="24"/>
+        <text class="n-title" x="830" y="200">Google Drive</text>
+        <text class="n-sub" x="830" y="219">TWO-WAY</text>
+
+        <!-- Routing -->
+        <rect class="n-box" x="760" y="272" width="210" height="84" rx="12"/>
+        <rect class="n-ic-bg" x="776" y="294" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-mail" x="784" y="302" width="24" height="24"/>
+        <text class="n-title" x="830" y="310">Routing</text>
+        <text class="n-sub" x="830" y="329">TWO-WAY</text>
+
+        <!-- PDF -->
+        <rect class="n-box" x="760" y="382" width="210" height="84" rx="12"/>
+        <rect class="n-ic-bg" x="776" y="404" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-doc" x="784" y="412" width="24" height="24"/>
+        <text class="n-title" x="830" y="420">PDF</text>
+        <text class="n-sub" x="830" y="439">ONE-WAY OUTPUT</text>
+      </svg>
+
+      <!-- Narrow (phone) layout -->
+      <svg class="map map-narrow" viewBox="0 0 360 712" role="img" aria-labelledby="mapn-t mapn-d">
+        <title id="mapn-t">SPARC Data system map</title>
+        <desc id="mapn-d">Data from Banner passes through a human step before it reaches the new SPARC Data system. Banner also feeds the existing BAR Report, which the system links to. The system exchanges data in both directions with Google Sheets, Google Drive and Routing, and produces PDFs as output.</desc>
+        <defs>
+          <marker id="ahn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+        </defs>
+
+        <!-- connections -->
+        <path class="edge" d="M150,76 C150,104 80,96 80,122" marker-end="url(#ahn)"/>
+        <path class="edge" d="M222,76 C222,98 263,96 263,116" marker-end="url(#ahn)"/>
+        <path class="edge" d="M80,220 V278" marker-end="url(#ahn)"/>
+        <path class="edge link" d="M263,182 V280"/>
+        <path class="edge" d="M44,384 V670"/>
+        <path class="edge" d="M46,442 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
+        <path class="edge" d="M46,518 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
+        <path class="edge" d="M46,594 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
+        <path class="edge" d="M44,670 H100" marker-end="url(#ahn)"/>
+
+        <!-- moving data -->
+        <path class="flow" pathLength="100" d="M150,76 C150,104 80,96 80,122"/>
+        <path class="flow d1" pathLength="100" d="M222,76 C222,98 263,96 263,116"/>
+        <path class="flow d3" pathLength="100" d="M80,220 V278"/>
+        <path class="flow" pathLength="100" d="M44,384 V442 H100"/>
+        <path class="flow rev d3" pathLength="100" d="M44,384 V442 H100"/>
+        <path class="flow d1" pathLength="100" d="M44,384 V518 H100"/>
+        <path class="flow rev d4" pathLength="100" d="M44,384 V518 H100"/>
+        <path class="flow d2" pathLength="100" d="M44,384 V594 H100"/>
+        <path class="flow rev" pathLength="100" d="M44,384 V594 H100"/>
+        <path class="flow d3" pathLength="100" d="M44,384 V670 H100"/>
+
+        <!-- edge annotations -->
+        <circle class="link-badge" cx="263" cy="231" r="14"/>
+        <use class="ic" href="#i-link" x="254" y="222" width="18" height="18"/>
+        <text class="edge-label" x="284" y="235">LINKED</text>
+
+        <!-- Banner -->
+        <rect class="n-box" x="100" y="12" width="160" height="64" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="24" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-db" x="120" y="32" width="24" height="24"/>
+        <text class="n-title" x="164" y="41">Banner</text>
+        <text class="n-sub" x="164" y="58">SOURCE DATA</text>
+
+        <!-- Human step -->
+        <circle class="n-box human" cx="80" cy="150" r="26"/>
+        <use class="ic" href="#i-person" x="68" y="138" width="24" height="24"/>
+        <text class="n-title sm" x="80" y="196" text-anchor="middle">Human step</text>
+        <text class="n-sub" x="80" y="211" text-anchor="middle">NO DIRECT IMPORT</text>
+
+        <!-- BAR Report -->
+        <rect class="n-box" x="180" y="118" width="166" height="64" rx="12"/>
+        <rect class="n-ic-bg" x="192" y="130" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-globe" x="200" y="138" width="24" height="24"/>
+        <text class="n-title" x="242" y="147">BAR Report</text>
+        <text class="n-sub" x="242" y="164">EXISTING TOOL</text>
+
+        <!-- System -->
+        <rect class="sys-halo" x="14" y="280" width="332" height="104" rx="16"/>
+        <rect class="sys-box" x="14" y="280" width="332" height="104" rx="16"/>
+        <rect class="n-ic-bg" x="30" y="308" width="48" height="48" rx="12"/>
+        <use class="ic" href="#i-sys" x="40" y="318" width="28" height="28"/>
+        <text class="sys-eyebrow" x="92" y="312">THE NEW SYSTEM</text>
+        <text class="sys-title" x="92" y="340" style="font-size:20px">SPARC <tspan class="sys-title accent" style="font-size:20px">DATA</tspan></text>
+        <text class="sys-meta" x="92" y="362">PUT · ORGANIZE · FETCH</text>
+
+        <!-- Google Sheets -->
+        <rect class="n-box" x="100" y="412" width="246" height="60" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="424" width="36" height="36" rx="9"/>
+        <use class="ic" href="#i-grid" x="118" y="430" width="24" height="24"/>
+        <text class="n-title" x="160" y="439">Google Sheets</text>
+        <text class="n-sub" x="160" y="455">TWO-WAY</text>
+
+        <!-- Google Drive -->
+        <rect class="n-box" x="100" y="488" width="246" height="60" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="500" width="36" height="36" rx="9"/>
+        <use class="ic" href="#i-folder" x="118" y="506" width="24" height="24"/>
+        <text class="n-title" x="160" y="515">Google Drive</text>
+        <text class="n-sub" x="160" y="531">TWO-WAY</text>
+
+        <!-- Routing -->
+        <rect class="n-box" x="100" y="564" width="246" height="60" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="576" width="36" height="36" rx="9"/>
+        <use class="ic" href="#i-mail" x="118" y="582" width="24" height="24"/>
+        <text class="n-title" x="160" y="591">Routing</text>
+        <text class="n-sub" x="160" y="607">TWO-WAY</text>
+
+        <!-- PDF -->
+        <rect class="n-box" x="100" y="640" width="246" height="60" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="652" width="36" height="36" rx="9"/>
+        <use class="ic" href="#i-doc" x="118" y="658" width="24" height="24"/>
+        <text class="n-title" x="160" y="667">PDF</text>
+        <text class="n-sub" x="160" y="683">ONE-WAY OUTPUT</text>
+      </svg>
+    </div>
+
+    <ul class="conn-list">
+      <li class="reveal">
+        <span class="conn-glyph" aria-hidden="true">→</span>
+        <div><strong>Banner → Human step → System</strong><p>Not a direct import. A person sits between Banner and the new system and moves the data across.</p></div>
+      </li>
+      <li class="reveal">
+        <span class="conn-glyph" aria-hidden="true">→</span>
+        <div><strong>Banner → BAR Report</strong><p>The Budget Availability Report is an existing SPARC tool, and it already pulls its data from Banner.</p></div>
+      </li>
+      <li class="reveal">
+        <span class="conn-glyph" aria-hidden="true"><svg><use href="#i-link"/></svg></span>
+        <div><strong>System — BAR Report</strong><p>Linked. Because BAR already reads from Banner, the new system links to it.</p></div>
+      </li>
+      <li class="reveal">
+        <span class="conn-glyph" aria-hidden="true">→</span>
+        <div><strong>System → PDF</strong><p>One-way. The system produces PDFs as output.</p></div>
+      </li>
+      <li class="reveal wide">
+        <span class="conn-glyph" aria-hidden="true">⇄</span>
+        <div><strong>System ⇄ Google Sheets · Google Drive · Routing</strong><p>Two-way. Data moves in both directions between the system and each of these. SPARC works in the Google ecosystem, so the spreadsheet and drive on the whiteboard are Google Sheets and Google Drive.</p></div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ TEAMS ============ -->
+  <section class="block" id="teams">
+    <div class="block-heading">
+      <span class="idx">02</span>
+      <h2>The Teams</h2>
+      <span class="sub">// two workstreams, one build</span>
+    </div>
+    <p class="block-intro">The build splits into two workstreams: what people see and touch, and the machinery underneath that keeps the data straight.</p>
+
+    <div class="teams">
+      <article class="team reveal">
+        <div class="team-head">
+          <h3>Product Design</h3>
+          <span class="team-tag">Workstream A</span>
+        </div>
+        <div>
+          <span class="k">Lead</span>
+          <p class="names">Josi<i>+</i>Santhosh<i>+</i>Jane</p>
+        </div>
+        <div class="core">
+          <span class="k">Core idea</span>
+          <p class="core-line">Make it a joy to use.</p>
+          <p>This team owns what the system looks like and how people move through it. The goal is an interface with real personality: polished, friendly, and colorful enough that working with SPARC data feels inviting instead of like a chore.</p>
+        </div>
+        <div>
+          <span class="k">From the whiteboard</span>
+          <ul class="chips">
+            <li>Fancy</li>
+            <li>Cute</li>
+            <li>Fun colors</li>
+            <li>What it looks like</li>
+            <li>How people interact</li>
+            <li>UI — User Interface</li>
+          </ul>
+        </div>
+      </article>
+
+      <article class="team reveal">
+        <div class="team-head">
+          <h3>System Infrastructure</h3>
+          <span class="team-tag">Workstream B</span>
+        </div>
+        <div>
+          <span class="k">Lead</span>
+          <p class="names">Owen<i>+</i>Dohyeon</p>
+        </div>
+        <div class="core">
+          <span class="k">Core idea</span>
+          <p class="core-line">Make the data dependable.</p>
+          <p>This team owns the machinery underneath: how data gets into the system, how it's kept in order, and how it comes back out the moment someone needs it. Every screen the design team builds stands on this.</p>
+        </div>
+        <div>
+          <span class="k">From the whiteboard</span>
+          <ol class="pipeline">
+            <li><b>Data Put</b><span>Get data into the system</span></li>
+            <li><b>Organize</b><span>Keep it structured and consistent</span></li>
+            <li><b>Fetch</b><span>Hand back the right data on request</span></li>
+          </ol>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ VALUES ============ -->
+  <section class="block" id="values">
+    <div class="block-heading">
+      <span class="idx">03</span>
+      <h2>Values</h2>
+      <span class="sub">// what we hold the build to</span>
+    </div>
+    <ol class="values reveal">
+      <li><span class="v-idx">01</span><span class="v-word">Simple</span><span class="v-mark" aria-hidden="true"></span></li>
+      <li><span class="v-idx">02</span><span class="v-word">Helpful</span><span class="v-mark" aria-hidden="true"></span></li>
+      <li><span class="v-idx">03</span><span class="v-word">Dependable</span><span class="v-mark" aria-hidden="true"></span></li>
+      <li><span class="v-idx">04</span><span class="v-word">Transparent</span><span class="v-mark" aria-hidden="true"></span></li>
+      <li><span class="v-idx">05</span><span class="v-word">Fluent</span><span class="v-mark" aria-hidden="true"></span></li>
+    </ol>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-row">
+    <span>SPONSORED PROGRAMS, AGREEMENTS, RESEARCH &amp; CONTRACTS (SPARC)</span>
+    <span>SOUTHERN UTAH UNIVERSITY</span>
+  </div>
+  <div class="foot-credit">
+    <img src="assets/rat-red.png" alt="" aria-hidden="true">
+    <span>Developed by RATs</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root = document.documentElement;
+  var items = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) return;
+  root.classList.add('js');
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('is-in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+</body>
+</html>
