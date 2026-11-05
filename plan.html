@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPARC Data Plan — SUU Sponsored Programs</title>
-<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system connects to Banner, Google Sheets, Google Drive, Routing and the BAR Report, who is building it, and the values guiding it.">
+<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system connects to Banner, Argos, Google Sheets (its backend), Google Drive, DocuSign, the calendar and the BAR Report, who is building it, and the values guiding it.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23db0000'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,6 +25,7 @@
     --accent-bright: #ff3b3b;
     --accent-dim: #6e0000;
     --accent-wash: rgba(219, 0, 0, 0.12);
+    --on-accent: #ffffff;
     --font-display: 'Orbitron', sans-serif;
     --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -48,6 +49,7 @@
       --accent-bright: #b40000;
       --accent-dim: #f6cccc;
       --accent-wash: rgba(219, 0, 0, 0.07);
+      --on-accent: #ffffff;
     }
   }
 
@@ -371,7 +373,7 @@
   }
 
   .n-box{ fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
-  .n-box.human{ stroke: var(--accent); stroke-dasharray: 4 4; }
+  .n-box.handoff{ stroke: var(--accent); stroke-dasharray: 4 4; }
   .n-ic-bg{ fill: var(--accent-wash); }
   .ic{ color: var(--accent-bright); }
   .n-title{ font-family: var(--font-body); font-weight: 600; font-size: 16px; fill: var(--text); }
@@ -415,6 +417,30 @@
   .arrowhead{ fill: var(--text-dim); }
   .link-badge{ fill: var(--panel); stroke: var(--border); stroke-width: 1.5; }
 
+  /* Google Sheets: the backend gets its own, heavier treatment */
+  .n-title.lg{ font-size: 19px; }
+  .edge.backend{ stroke: var(--accent); stroke-width: 2.5; }
+  .arrowhead.accent{ fill: var(--accent); }
+  .flow.big{ stroke-width: 7; }
+  .be-box{ fill: var(--surface); }
+  .be-wash{ fill: var(--accent-wash); stroke: var(--accent); stroke-width: 2; }
+  .be-halo{
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 8;
+    opacity: 0.1;
+    animation: halo 3.2s ease-in-out infinite;
+    animation-delay: -1.6s;
+  }
+  .be-pill{ fill: var(--accent); }
+  .be-pill-text{
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    fill: var(--on-accent);
+  }
+
   .conn-list{
     list-style: none;
     margin: 1.25rem 0 0;
@@ -434,6 +460,28 @@
     border-radius: 12px;
   }
   .conn-list li.wide{ grid-column: 1 / -1; }
+  .conn-list li.key{
+    border-color: var(--accent);
+    background: linear-gradient(135deg, var(--accent-wash), transparent 70%), var(--surface);
+  }
+  .conn-list li.key .conn-glyph{
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .conn-tag{
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    vertical-align: 0.1em;
+  }
   .conn-glyph{
     width: 2.25rem;
     height: 2.25rem;
@@ -727,8 +775,11 @@
   <symbol id="i-db" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5"/><path d="M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/>
   </symbol>
-  <symbol id="i-person" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="7" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4M7.5 14h3M7.5 17.5h6"/>
+  </symbol>
+  <symbol id="i-sign" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15.5 4.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/><path d="M13.5 6.5l3 3"/><path d="M12 21h9"/>
   </symbol>
   <symbol id="i-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/>
@@ -813,10 +864,13 @@
       <!-- Wide layout -->
       <svg class="map map-wide" viewBox="0 0 1000 500" role="img" aria-labelledby="mapw-t mapw-d">
         <title id="mapw-t">SPARC Data system map</title>
-        <desc id="mapw-d">Data from Banner passes through a human step before it reaches the new SPARC Data system. Banner also feeds the existing BAR Report, which the system links to. The system exchanges data in both directions with Google Sheets, Google Drive and Routing, and produces PDFs as output.</desc>
+        <desc id="mapw-d">Data from Banner reaches the new SPARC Data system as a handoff import from an Argos email, not a direct import. Banner also feeds the existing BAR Report, which the system links to. Google Sheets is the system's backend, with data moving both ways. The system also exchanges data both ways with Google Drive, routes items through DocuSign automatically, and sends an action item summary to the calendar.</desc>
         <defs>
           <marker id="ahw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
             <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+          <marker id="ahw-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead accent" d="M0,1 L9,5 L0,9 z"/>
           </marker>
         </defs>
 
@@ -825,22 +879,22 @@
         <path class="edge" d="M358,108 H430" marker-end="url(#ahw)"/>
         <path class="edge" d="M130,156 V340" marker-end="url(#ahw)"/>
         <path class="edge link" d="M230,388 H430"/>
-        <path class="edge" d="M640,94 H760" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
-        <path class="edge" d="M640,204 H760" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
-        <path class="edge" d="M640,314 H760" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
-        <path class="edge" d="M640,424 H760" marker-end="url(#ahw)"/>
+        <path class="edge backend" d="M640,109 H740" marker-start="url(#ahw-b)" marker-end="url(#ahw-b)"/>
+        <path class="edge" d="M640,234 H740" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
+        <path class="edge" d="M640,334 H740" marker-start="url(#ahw)" marker-end="url(#ahw)"/>
+        <path class="edge" d="M640,434 H740" marker-end="url(#ahw)"/>
 
         <!-- moving data -->
         <path class="flow" pathLength="100" d="M230,108 H302"/>
         <path class="flow d3" pathLength="100" d="M358,108 H430"/>
         <path class="flow d1" pathLength="100" d="M130,156 V340"/>
-        <path class="flow" pathLength="100" d="M640,94 H760"/>
-        <path class="flow rev d3" pathLength="100" d="M640,94 H760"/>
-        <path class="flow d1" pathLength="100" d="M640,204 H760"/>
-        <path class="flow rev d4" pathLength="100" d="M640,204 H760"/>
-        <path class="flow d2" pathLength="100" d="M640,314 H760"/>
-        <path class="flow rev" pathLength="100" d="M640,314 H760"/>
-        <path class="flow d3" pathLength="100" d="M640,424 H760"/>
+        <path class="flow big" pathLength="100" d="M640,109 H740"/>
+        <path class="flow big rev d2" pathLength="100" d="M640,109 H740"/>
+        <path class="flow d1" pathLength="100" d="M640,234 H740"/>
+        <path class="flow rev d4" pathLength="100" d="M640,234 H740"/>
+        <path class="flow d2" pathLength="100" d="M640,334 H740"/>
+        <path class="flow rev" pathLength="100" d="M640,334 H740"/>
+        <path class="flow d3" pathLength="100" d="M640,434 H740"/>
 
         <!-- edge annotations -->
         <text class="edge-label" x="144" y="242">BAR ALSO PULLS</text>
@@ -856,11 +910,11 @@
         <text class="n-title" x="100" y="104">Banner</text>
         <text class="n-sub" x="100" y="123">SOURCE DATA</text>
 
-        <!-- Human step -->
-        <circle class="n-box human" cx="330" cy="108" r="28"/>
-        <use class="ic" href="#i-person" x="318" y="96" width="24" height="24"/>
-        <text class="n-title sm" x="330" y="160" text-anchor="middle">Human step</text>
-        <text class="n-sub" x="330" y="177" text-anchor="middle">NO DIRECT IMPORT</text>
+        <!-- Argos Email handoff -->
+        <circle class="n-box handoff" cx="330" cy="108" r="28"/>
+        <use class="ic" href="#i-mail" x="318" y="96" width="24" height="24"/>
+        <text class="n-title sm" x="330" y="160" text-anchor="middle">Argos Email</text>
+        <text class="n-sub" x="330" y="177" text-anchor="middle">HANDOFF IMPORT</text>
 
         <!-- BAR Report -->
         <rect class="n-box" x="30" y="340" width="200" height="96" rx="12"/>
@@ -872,50 +926,55 @@
         <!-- System -->
         <rect class="sys-halo" x="430" y="44" width="210" height="430" rx="16"/>
         <rect class="sys-box" x="430" y="44" width="210" height="430" rx="16"/>
-        <rect class="n-ic-bg" x="511" y="150" width="48" height="48" rx="12"/>
-        <use class="ic" href="#i-sys" x="521" y="160" width="28" height="28"/>
-        <text class="sys-eyebrow" x="535" y="232" text-anchor="middle">THE NEW SYSTEM</text>
-        <text class="sys-title" x="535" y="270" text-anchor="middle">SPARC</text>
-        <text class="sys-title accent" x="535" y="302" text-anchor="middle">DATA</text>
-        <line class="sys-rule" x1="462" y1="372" x2="608" y2="372"/>
-        <text class="sys-meta" x="535" y="396" text-anchor="middle">PUT · ORGANIZE · FETCH</text>
+        <rect class="n-ic-bg" x="511" y="183" width="48" height="48" rx="12"/>
+        <use class="ic" href="#i-sys" x="521" y="193" width="28" height="28"/>
+        <text class="sys-eyebrow" x="535" y="265" text-anchor="middle">THE NEW SYSTEM</text>
+        <text class="sys-title" x="535" y="303" text-anchor="middle">SPARC</text>
+        <text class="sys-title accent" x="535" y="335" text-anchor="middle">DATA</text>
 
-        <!-- Google Sheets -->
-        <rect class="n-box" x="760" y="52" width="210" height="84" rx="12"/>
-        <rect class="n-ic-bg" x="776" y="74" width="40" height="40" rx="10"/>
-        <use class="ic" href="#i-grid" x="784" y="82" width="24" height="24"/>
-        <text class="n-title" x="830" y="90">Google Sheets</text>
-        <text class="n-sub" x="830" y="109">TWO-WAY</text>
+        <!-- Google Sheets: the backend -->
+        <rect class="be-halo" x="740" y="44" width="240" height="130" rx="14"/>
+        <rect class="be-box" x="740" y="44" width="240" height="130" rx="14"/>
+        <rect class="be-wash" x="740" y="44" width="240" height="130" rx="14"/>
+        <rect class="be-pill" x="756" y="58" width="74" height="20" rx="10"/>
+        <text class="be-pill-text" x="793" y="72" text-anchor="middle">BACKEND</text>
+        <rect class="n-ic-bg" x="756" y="94" width="52" height="52" rx="12"/>
+        <use class="ic" href="#i-grid" x="766" y="104" width="32" height="32"/>
+        <text class="n-title lg" x="822" y="117">Google Sheets</text>
+        <text class="n-sub" x="822" y="137">TWO-WAY</text>
 
         <!-- Google Drive -->
-        <rect class="n-box" x="760" y="162" width="210" height="84" rx="12"/>
-        <rect class="n-ic-bg" x="776" y="184" width="40" height="40" rx="10"/>
-        <use class="ic" href="#i-folder" x="784" y="192" width="24" height="24"/>
-        <text class="n-title" x="830" y="200">Google Drive</text>
-        <text class="n-sub" x="830" y="219">TWO-WAY</text>
+        <rect class="n-box" x="740" y="194" width="240" height="80" rx="12"/>
+        <rect class="n-ic-bg" x="756" y="214" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-folder" x="764" y="222" width="24" height="24"/>
+        <text class="n-title" x="810" y="231">Google Drive</text>
+        <text class="n-sub" x="810" y="250">TWO-WAY</text>
 
-        <!-- Routing -->
-        <rect class="n-box" x="760" y="272" width="210" height="84" rx="12"/>
-        <rect class="n-ic-bg" x="776" y="294" width="40" height="40" rx="10"/>
-        <use class="ic" href="#i-mail" x="784" y="302" width="24" height="24"/>
-        <text class="n-title" x="830" y="310">Routing</text>
-        <text class="n-sub" x="830" y="329">TWO-WAY</text>
+        <!-- DocuSign Routing -->
+        <rect class="n-box" x="740" y="294" width="240" height="80" rx="12"/>
+        <rect class="n-ic-bg" x="756" y="314" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-sign" x="764" y="322" width="24" height="24"/>
+        <text class="n-title" x="810" y="331">DocuSign Routing</text>
+        <text class="n-sub" x="810" y="350">AUTOMATIC</text>
 
-        <!-- PDF -->
-        <rect class="n-box" x="760" y="382" width="210" height="84" rx="12"/>
-        <rect class="n-ic-bg" x="776" y="404" width="40" height="40" rx="10"/>
-        <use class="ic" href="#i-doc" x="784" y="412" width="24" height="24"/>
-        <text class="n-title" x="830" y="420">PDF</text>
-        <text class="n-sub" x="830" y="439">ONE-WAY OUTPUT</text>
+        <!-- Calendar -->
+        <rect class="n-box" x="740" y="394" width="240" height="80" rx="12"/>
+        <rect class="n-ic-bg" x="756" y="414" width="40" height="40" rx="10"/>
+        <use class="ic" href="#i-cal" x="764" y="422" width="24" height="24"/>
+        <text class="n-title" x="810" y="431">Calendar</text>
+        <text class="n-sub" x="810" y="450">ACTION ITEM SUMMARY</text>
       </svg>
 
       <!-- Narrow (phone) layout -->
-      <svg class="map map-narrow" viewBox="0 0 360 712" role="img" aria-labelledby="mapn-t mapn-d">
+      <svg class="map map-narrow" viewBox="0 0 360 744" role="img" aria-labelledby="mapn-t mapn-d">
         <title id="mapn-t">SPARC Data system map</title>
-        <desc id="mapn-d">Data from Banner passes through a human step before it reaches the new SPARC Data system. Banner also feeds the existing BAR Report, which the system links to. The system exchanges data in both directions with Google Sheets, Google Drive and Routing, and produces PDFs as output.</desc>
+        <desc id="mapn-d">Data from Banner reaches the new SPARC Data system as a handoff import from an Argos email, not a direct import. Banner also feeds the existing BAR Report, which the system links to. Google Sheets is the system's backend, with data moving both ways. The system also exchanges data both ways with Google Drive, routes items through DocuSign automatically, and sends an action item summary to the calendar.</desc>
         <defs>
           <marker id="ahn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
             <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+          <marker id="ahn-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead accent" d="M0,1 L9,5 L0,9 z"/>
           </marker>
         </defs>
 
@@ -924,23 +983,24 @@
         <path class="edge" d="M222,76 C222,98 263,96 263,116" marker-end="url(#ahn)"/>
         <path class="edge" d="M80,220 V278" marker-end="url(#ahn)"/>
         <path class="edge link" d="M263,182 V280"/>
-        <path class="edge" d="M44,384 V670"/>
-        <path class="edge" d="M46,442 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
-        <path class="edge" d="M46,518 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
-        <path class="edge" d="M46,594 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
-        <path class="edge" d="M44,670 H100" marker-end="url(#ahn)"/>
+        <path class="edge" d="M44,384 V702"/>
+        <path class="edge backend" d="M44,384 V458"/>
+        <path class="edge backend" d="M46,458 H100" marker-start="url(#ahn-b)" marker-end="url(#ahn-b)"/>
+        <path class="edge" d="M46,550 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
+        <path class="edge" d="M46,626 H100" marker-start="url(#ahn)" marker-end="url(#ahn)"/>
+        <path class="edge" d="M44,702 H100" marker-end="url(#ahn)"/>
 
         <!-- moving data -->
         <path class="flow" pathLength="100" d="M150,76 C150,104 80,96 80,122"/>
         <path class="flow d1" pathLength="100" d="M222,76 C222,98 263,96 263,116"/>
         <path class="flow d3" pathLength="100" d="M80,220 V278"/>
-        <path class="flow" pathLength="100" d="M44,384 V442 H100"/>
-        <path class="flow rev d3" pathLength="100" d="M44,384 V442 H100"/>
-        <path class="flow d1" pathLength="100" d="M44,384 V518 H100"/>
-        <path class="flow rev d4" pathLength="100" d="M44,384 V518 H100"/>
-        <path class="flow d2" pathLength="100" d="M44,384 V594 H100"/>
-        <path class="flow rev" pathLength="100" d="M44,384 V594 H100"/>
-        <path class="flow d3" pathLength="100" d="M44,384 V670 H100"/>
+        <path class="flow big" pathLength="100" d="M44,384 V458 H100"/>
+        <path class="flow big rev d2" pathLength="100" d="M44,384 V458 H100"/>
+        <path class="flow d1" pathLength="100" d="M44,384 V550 H100"/>
+        <path class="flow rev d4" pathLength="100" d="M44,384 V550 H100"/>
+        <path class="flow d2" pathLength="100" d="M44,384 V626 H100"/>
+        <path class="flow rev" pathLength="100" d="M44,384 V626 H100"/>
+        <path class="flow d3" pathLength="100" d="M44,384 V702 H100"/>
 
         <!-- edge annotations -->
         <circle class="link-badge" cx="263" cy="231" r="14"/>
@@ -954,11 +1014,11 @@
         <text class="n-title" x="164" y="41">Banner</text>
         <text class="n-sub" x="164" y="58">SOURCE DATA</text>
 
-        <!-- Human step -->
-        <circle class="n-box human" cx="80" cy="150" r="26"/>
-        <use class="ic" href="#i-person" x="68" y="138" width="24" height="24"/>
-        <text class="n-title sm" x="80" y="196" text-anchor="middle">Human step</text>
-        <text class="n-sub" x="80" y="211" text-anchor="middle">NO DIRECT IMPORT</text>
+        <!-- Argos Email handoff -->
+        <circle class="n-box handoff" cx="80" cy="150" r="26"/>
+        <use class="ic" href="#i-mail" x="68" y="138" width="24" height="24"/>
+        <text class="n-title sm" x="80" y="196" text-anchor="middle">Argos Email</text>
+        <text class="n-sub" x="80" y="211" text-anchor="middle">HANDOFF IMPORT</text>
 
         <!-- BAR Report -->
         <rect class="n-box" x="180" y="118" width="166" height="64" rx="12"/>
@@ -972,44 +1032,51 @@
         <rect class="sys-box" x="14" y="280" width="332" height="104" rx="16"/>
         <rect class="n-ic-bg" x="30" y="308" width="48" height="48" rx="12"/>
         <use class="ic" href="#i-sys" x="40" y="318" width="28" height="28"/>
-        <text class="sys-eyebrow" x="92" y="312">THE NEW SYSTEM</text>
-        <text class="sys-title" x="92" y="340" style="font-size:20px">SPARC <tspan class="sys-title accent" style="font-size:20px">DATA</tspan></text>
-        <text class="sys-meta" x="92" y="362">PUT · ORGANIZE · FETCH</text>
+        <text class="sys-eyebrow" x="92" y="325">THE NEW SYSTEM</text>
+        <text class="sys-title" x="92" y="353" style="font-size:20px">SPARC <tspan class="sys-title accent" style="font-size:20px">DATA</tspan></text>
 
-        <!-- Google Sheets -->
-        <rect class="n-box" x="100" y="412" width="246" height="60" rx="12"/>
-        <rect class="n-ic-bg" x="112" y="424" width="36" height="36" rx="9"/>
-        <use class="ic" href="#i-grid" x="118" y="430" width="24" height="24"/>
-        <text class="n-title" x="160" y="439">Google Sheets</text>
-        <text class="n-sub" x="160" y="455">TWO-WAY</text>
+        <!-- Google Sheets: the backend -->
+        <rect class="be-halo" x="100" y="412" width="246" height="92" rx="14"/>
+        <rect class="be-box" x="100" y="412" width="246" height="92" rx="14"/>
+        <rect class="be-wash" x="100" y="412" width="246" height="92" rx="14"/>
+        <rect class="be-pill" x="112" y="423" width="70" height="18" rx="9"/>
+        <text class="be-pill-text" x="147" y="436" text-anchor="middle">BACKEND</text>
+        <rect class="n-ic-bg" x="112" y="450" width="42" height="42" rx="10"/>
+        <use class="ic" href="#i-grid" x="121" y="459" width="24" height="24"/>
+        <text class="n-title lg" x="166" y="470" style="font-size:17px">Google Sheets</text>
+        <text class="n-sub" x="166" y="487">TWO-WAY</text>
 
         <!-- Google Drive -->
-        <rect class="n-box" x="100" y="488" width="246" height="60" rx="12"/>
-        <rect class="n-ic-bg" x="112" y="500" width="36" height="36" rx="9"/>
-        <use class="ic" href="#i-folder" x="118" y="506" width="24" height="24"/>
-        <text class="n-title" x="160" y="515">Google Drive</text>
-        <text class="n-sub" x="160" y="531">TWO-WAY</text>
+        <rect class="n-box" x="100" y="520" width="246" height="60" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="532" width="36" height="36" rx="9"/>
+        <use class="ic" href="#i-folder" x="118" y="538" width="24" height="24"/>
+        <text class="n-title" x="160" y="547">Google Drive</text>
+        <text class="n-sub" x="160" y="563">TWO-WAY</text>
 
-        <!-- Routing -->
-        <rect class="n-box" x="100" y="564" width="246" height="60" rx="12"/>
-        <rect class="n-ic-bg" x="112" y="576" width="36" height="36" rx="9"/>
-        <use class="ic" href="#i-mail" x="118" y="582" width="24" height="24"/>
-        <text class="n-title" x="160" y="591">Routing</text>
-        <text class="n-sub" x="160" y="607">TWO-WAY</text>
+        <!-- DocuSign Routing -->
+        <rect class="n-box" x="100" y="596" width="246" height="60" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="608" width="36" height="36" rx="9"/>
+        <use class="ic" href="#i-sign" x="118" y="614" width="24" height="24"/>
+        <text class="n-title" x="160" y="623">DocuSign Routing</text>
+        <text class="n-sub" x="160" y="639">AUTOMATIC</text>
 
-        <!-- PDF -->
-        <rect class="n-box" x="100" y="640" width="246" height="60" rx="12"/>
-        <rect class="n-ic-bg" x="112" y="652" width="36" height="36" rx="9"/>
-        <use class="ic" href="#i-doc" x="118" y="658" width="24" height="24"/>
-        <text class="n-title" x="160" y="667">PDF</text>
-        <text class="n-sub" x="160" y="683">ONE-WAY OUTPUT</text>
+        <!-- Calendar -->
+        <rect class="n-box" x="100" y="672" width="246" height="60" rx="12"/>
+        <rect class="n-ic-bg" x="112" y="684" width="36" height="36" rx="9"/>
+        <use class="ic" href="#i-cal" x="118" y="690" width="24" height="24"/>
+        <text class="n-title" x="160" y="699">Calendar</text>
+        <text class="n-sub" x="160" y="715">ACTION ITEM SUMMARY</text>
       </svg>
     </div>
 
     <ul class="conn-list">
+      <li class="reveal wide key">
+        <span class="conn-glyph" aria-hidden="true">⇄</span>
+        <div><strong>System ⇄ Google Sheets <span class="conn-tag">Backend</span></strong><p>Google Sheets is the system's backend: it's where the system's data lives, and data moves both ways between them.</p></div>
+      </li>
       <li class="reveal">
         <span class="conn-glyph" aria-hidden="true">→</span>
-        <div><strong>Banner → Human step → System</strong><p>Not a direct import. A person sits between Banner and the new system and moves the data across.</p></div>
+        <div><strong>Banner → Argos Email → System</strong><p>A handoff import, not a direct one. Banner data comes over in an Argos email and is handed off into the system.</p></div>
       </li>
       <li class="reveal">
         <span class="conn-glyph" aria-hidden="true">→</span>
@@ -1020,12 +1087,16 @@
         <div><strong>System — BAR Report</strong><p>Linked. Because BAR already reads from Banner, the new system links to it.</p></div>
       </li>
       <li class="reveal">
-        <span class="conn-glyph" aria-hidden="true">→</span>
-        <div><strong>System → PDF</strong><p>One-way. The system produces PDFs as output.</p></div>
-      </li>
-      <li class="reveal wide">
         <span class="conn-glyph" aria-hidden="true">⇄</span>
-        <div><strong>System ⇄ Google Sheets · Google Drive · Routing</strong><p>Two-way. Data moves in both directions between the system and each of these. SPARC works in the Google ecosystem, so the spreadsheet and drive on the whiteboard are Google Sheets and Google Drive.</p></div>
+        <div><strong>System ⇄ Google Drive</strong><p>Two-way. Data moves in both directions. SPARC works in the Google ecosystem, so the drive on the whiteboard is Google Drive.</p></div>
+      </li>
+      <li class="reveal">
+        <span class="conn-glyph" aria-hidden="true">⇄</span>
+        <div><strong>System ⇄ DocuSign Routing</strong><p>Automatic. The system routes items through DocuSign on its own.</p></div>
+      </li>
+      <li class="reveal">
+        <span class="conn-glyph" aria-hidden="true">→</span>
+        <div><strong>System → Calendar</strong><p>One-way. The system puts an action item summary on the calendar.</p></div>
       </li>
     </ul>
   </section>
