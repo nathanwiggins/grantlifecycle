@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPARC Data Plan — SUU Sponsored Programs</title>
-<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system takes in Banner data through an Argos email handoff, keeps it in Google Sheets as its backend, and organizes the work into five modules, plus who is building it, and the values guiding it.">
+<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system takes in Banner data through an Argos email handoff, keeps it in Google Sheets as its backend, and organizes the work into five modules, the statuses a grant moves through, who is building it, and the values guiding it.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23db0000'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -537,6 +537,114 @@
     .conn-list{ grid-template-columns: 1fr; }
   }
 
+  /* ---------- Grant statuses ---------- */
+  .zone{ fill: var(--surface); fill-opacity: 0.55; stroke: var(--border); stroke-width: 1.5; }
+  .zone-label{
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    fill: var(--accent-bright);
+  }
+  .zone-sub{ fill: var(--text-faint); letter-spacing: 0.08em; }
+  .st-box{ fill: var(--surface); stroke: var(--border); stroke-width: 1.5; }
+  .st-box.done{ fill: var(--accent); stroke: var(--accent); }
+  .st-title{ font-family: var(--font-body); font-weight: 600; font-size: 13.5px; fill: var(--text); }
+  .st-title.done{ fill: var(--on-accent); }
+  .dead-box{ fill: none; stroke: var(--text-faint); stroke-width: 1.5; stroke-dasharray: 4 4; }
+  .dead-title{ font-family: var(--font-body); font-weight: 500; font-size: 13px; fill: var(--text-dim); }
+  .dead-ic{ color: var(--text-faint); }
+  .edge.dead{ stroke-dasharray: 3 4; }
+  .arrowhead.dead{ fill: var(--text-faint); }
+  .boundary{ stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 5; }
+  .boundary-label{
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    fill: var(--accent-bright);
+  }
+  .boundary-note{ font-family: var(--font-body); font-size: 14px; fill: var(--text-dim); }
+  .flow.slow{ animation-duration: 7s; }
+
+  .status-key{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.4rem;
+    margin: 1rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    color: var(--text-dim);
+  }
+  .status-key span{
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .key-swatch{
+    width: 22px;
+    height: 14px;
+    border-radius: 4px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+  }
+  .key-swatch.dashed{ border-style: dashed; border-color: var(--text-faint); background: transparent; }
+  .key-swatch.done{ background: var(--accent); border-color: var(--accent); }
+  .key-line{ width: 0; height: 18px; border-left: 2px dashed var(--accent); }
+
+  .phase-cards{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  @media (max-width: 720px){
+    .phase-cards{ grid-template-columns: 1fr; }
+  }
+  .phase-card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.1rem 1.2rem 1.25rem;
+  }
+  .phase-card-head{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .phase-card h3{
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+  .phase-card-head .team-tag{ text-decoration: none; transition: color var(--motion-fast), border-color var(--motion-fast); }
+  .phase-card-head .team-tag:hover,
+  .phase-card-head .team-tag:focus-visible{ color: var(--accent-bright); border-color: var(--accent-dim); }
+  .phase-card .status-row + .k{ margin-top: 0.9rem; }
+  .phase-card p{ margin: 0.9rem 0 0; color: var(--text-dim); font-size: 0.9rem; }
+  .status-row{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .status-chip{
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    padding: 0.22rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+  .status-chip.dead{ border-style: dashed; border-color: var(--text-faint); background: transparent; color: var(--text-dim); }
+  .status-chip.done{ background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .status-arrow{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-bright); }
+  .status-none{ font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-faint); }
+
   /* ---------- Teams ---------- */
   .teams{
     display: grid;
@@ -823,6 +931,9 @@
   <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5l8.5 6 8.5-6"/>
   </symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="8.5"/><path d="M6 18L18 6"/>
+  </symbol>
   <symbol id="i-sys" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
     <rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/>
   </symbol>
@@ -840,7 +951,7 @@
   <div>
     <p class="eyebrow">SPARC — System Planning</p>
     <h1>SPARC <em>Data</em></h1>
-    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the two teams building it, and the five values we're holding it to.</p>
+    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the statuses every grant moves through, the two teams building it, and the five values we're holding it to.</p>
     <div class="stat-row">
       <div class="stat-chip"><b>1</b><span>System</span></div>
       <div class="stat-chip"><b>2</b><span>Teams</span></div>
@@ -1089,10 +1200,200 @@
     </ul>
   </section>
 
+  <!-- ============ STATUSES ============ -->
+  <section class="block" id="statuses">
+    <div class="block-heading">
+      <span class="idx">02</span>
+      <h2>Grant Statuses</h2>
+      <span class="sub">// every place a grant can land</span>
+    </div>
+    <p class="block-intro">Every grant in the system carries one of these statuses. Most grants move forward along the main path, but four statuses are dead ends where a grant stops. The red dashed line marks where Pre-Award ends and Post-Award begins.</p>
+
+    <div class="map-panel reveal">
+      <!-- Wide layout -->
+      <svg class="map map-wide" viewBox="0 0 1000 344" role="img" aria-labelledby="stw-t stw-d">
+        <title id="stw-t">Grant status flow chart</title>
+        <desc id="stw-d">Pre-Award: a grant starts In Development, which leads either to Cancelled, a dead end, or to Submitted. Submitted leads to Denied, Dormant or Withdrawn, all dead ends, or to Selected. Selected is where Pre-Award ends and Post-Award begins. Post-Award: Selected, then Awarded, then In Closeout, then Completed.</desc>
+        <defs>
+          <marker id="sw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+          <marker id="sw-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead dead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+        </defs>
+
+        <!-- phase zones -->
+        <rect class="zone" x="12" y="12" width="324" height="320" rx="14"/>
+        <rect class="zone" x="352" y="12" width="636" height="136" rx="14"/>
+        <text class="zone-label" x="30" y="38">PRE-AWARD <tspan class="zone-sub">· STAGES 01–04</tspan></text>
+        <text class="zone-label" x="370" y="38">POST-AWARD <tspan class="zone-sub">· STAGES 05–10</tspan></text>
+
+        <!-- main path -->
+        <path class="edge" d="M158,90 H188" marker-end="url(#sw-a)"/>
+        <path class="edge" d="M314,90 H372" marker-end="url(#sw-a)"/>
+        <path class="edge" d="M498,90 H528" marker-end="url(#sw-a)"/>
+        <path class="edge" d="M654,90 H684" marker-end="url(#sw-a)"/>
+        <path class="edge" d="M810,90 H840" marker-end="url(#sw-a)"/>
+        <path class="flow slow" pathLength="100" d="M158,90 H842"/>
+
+        <!-- dead-end branches -->
+        <path class="edge dead" d="M96,114 V158" marker-end="url(#sw-d)"/>
+        <path class="edge dead" d="M252,114 V136 H172 V294"/>
+        <path class="edge dead" d="M172,182 H188" marker-end="url(#sw-d)"/>
+        <path class="edge dead" d="M172,238 H188" marker-end="url(#sw-d)"/>
+        <path class="edge dead" d="M172,294 H188" marker-end="url(#sw-d)"/>
+
+        <!-- Pre-Award / Post-Award boundary -->
+        <line class="boundary" x1="344" y1="4" x2="344" y2="340"/>
+        <line class="boundary" x1="344" y1="196" x2="364" y2="196"/>
+        <text class="boundary-label" x="374" y="200">PRE-AWARD ENDS · POST-AWARD BEGINS</text>
+        <text class="boundary-note" x="374" y="224">A grant crosses into Post-Award once the sponsor selects it.</text>
+
+        <!-- statuses: main path -->
+        <rect class="st-box" x="34" y="66" width="124" height="48" rx="10"/>
+        <text class="st-title" x="96" y="95" text-anchor="middle">In Development</text>
+        <rect class="st-box" x="190" y="66" width="124" height="48" rx="10"/>
+        <text class="st-title" x="252" y="95" text-anchor="middle">Submitted</text>
+        <rect class="st-box" x="374" y="66" width="124" height="48" rx="10"/>
+        <text class="st-title" x="436" y="95" text-anchor="middle">Selected</text>
+        <rect class="st-box" x="530" y="66" width="124" height="48" rx="10"/>
+        <text class="st-title" x="592" y="95" text-anchor="middle">Awarded</text>
+        <rect class="st-box" x="686" y="66" width="124" height="48" rx="10"/>
+        <text class="st-title" x="748" y="95" text-anchor="middle">In Closeout</text>
+        <rect class="st-box done" x="842" y="66" width="124" height="48" rx="10"/>
+        <text class="st-title done" x="904" y="95" text-anchor="middle">Completed</text>
+
+        <!-- statuses: dead ends -->
+        <rect class="dead-box" x="34" y="160" width="124" height="44" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="46" y="174" width="16" height="16"/>
+        <text class="dead-title" x="70" y="186.5">Cancelled</text>
+        <rect class="dead-box" x="190" y="160" width="124" height="44" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="202" y="174" width="16" height="16"/>
+        <text class="dead-title" x="226" y="186.5">Denied</text>
+        <rect class="dead-box" x="190" y="216" width="124" height="44" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="202" y="230" width="16" height="16"/>
+        <text class="dead-title" x="226" y="242.5">Dormant</text>
+        <rect class="dead-box" x="190" y="272" width="124" height="44" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="202" y="286" width="16" height="16"/>
+        <text class="dead-title" x="226" y="298.5">Withdrawn</text>
+      </svg>
+
+      <!-- Narrow (phone) layout -->
+      <svg class="map map-narrow" viewBox="0 0 360 666" role="img" aria-labelledby="stn-t stn-d">
+        <title id="stn-t">Grant status flow chart</title>
+        <desc id="stn-d">Pre-Award: a grant starts In Development, which leads either to Cancelled, a dead end, or to Submitted. Submitted leads to Denied, Dormant or Withdrawn, all dead ends, or to Selected. Selected is where Pre-Award ends and Post-Award begins. Post-Award: Selected, then Awarded, then In Closeout, then Completed.</desc>
+        <defs>
+          <marker id="sn-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+          <marker id="sn-d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
+            <path class="arrowhead dead" d="M0,1 L9,5 L0,9 z"/>
+          </marker>
+        </defs>
+
+        <!-- phase zones -->
+        <rect class="zone" x="8" y="8" width="344" height="264" rx="14"/>
+        <rect class="zone" x="8" y="326" width="344" height="328" rx="14"/>
+        <text class="zone-label" x="22" y="32">PRE-AWARD <tspan class="zone-sub">· STAGES 01–04</tspan></text>
+        <text class="zone-label" x="338" y="350" text-anchor="end">POST-AWARD <tspan class="zone-sub">· STAGES 05–10</tspan></text>
+
+        <!-- main path -->
+        <path class="edge" d="M98,96 V158" marker-end="url(#sn-a)"/>
+        <path class="edge" d="M98,206 V362" marker-end="url(#sn-a)"/>
+        <path class="edge" d="M98,410 V438" marker-end="url(#sn-a)"/>
+        <path class="edge" d="M98,486 V514" marker-end="url(#sn-a)"/>
+        <path class="edge" d="M98,562 V590" marker-end="url(#sn-a)"/>
+        <path class="flow slow" pathLength="100" d="M98,96 V592"/>
+
+        <!-- dead-end branches -->
+        <path class="edge dead" d="M176,73 H204" marker-end="url(#sn-d)"/>
+        <path class="edge dead" d="M176,183 H190 M190,131 V235"/>
+        <path class="edge dead" d="M190,131 H204" marker-end="url(#sn-d)"/>
+        <path class="edge dead" d="M190,183 H204" marker-end="url(#sn-d)"/>
+        <path class="edge dead" d="M190,235 H204" marker-end="url(#sn-d)"/>
+
+        <!-- Pre-Award / Post-Award boundary -->
+        <line class="boundary" x1="0" y1="296" x2="360" y2="296"/>
+        <text class="boundary-label" x="344" y="288" text-anchor="end">PRE-AWARD ENDS ↑</text>
+        <text class="boundary-label" x="344" y="314" text-anchor="end">POST-AWARD BEGINS ↓</text>
+        <text class="boundary-note" x="196" y="384">A grant crosses into</text>
+        <text class="boundary-note" x="196" y="402">Post-Award once the</text>
+        <text class="boundary-note" x="196" y="420">sponsor selects it.</text>
+
+        <!-- statuses: main path -->
+        <rect class="st-box" x="20" y="50" width="156" height="46" rx="10"/>
+        <text class="st-title" x="98" y="78" text-anchor="middle">In Development</text>
+        <rect class="st-box" x="20" y="160" width="156" height="46" rx="10"/>
+        <text class="st-title" x="98" y="188" text-anchor="middle">Submitted</text>
+        <rect class="st-box" x="20" y="364" width="156" height="46" rx="10"/>
+        <text class="st-title" x="98" y="392" text-anchor="middle">Selected</text>
+        <rect class="st-box" x="20" y="440" width="156" height="46" rx="10"/>
+        <text class="st-title" x="98" y="468" text-anchor="middle">Awarded</text>
+        <rect class="st-box" x="20" y="516" width="156" height="46" rx="10"/>
+        <text class="st-title" x="98" y="544" text-anchor="middle">In Closeout</text>
+        <rect class="st-box done" x="20" y="592" width="156" height="46" rx="10"/>
+        <text class="st-title done" x="98" y="620" text-anchor="middle">Completed</text>
+
+        <!-- statuses: dead ends -->
+        <rect class="dead-box" x="206" y="53" width="138" height="40" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="218" y="65" width="16" height="16"/>
+        <text class="dead-title" x="242" y="77.5">Cancelled</text>
+        <rect class="dead-box" x="206" y="111" width="138" height="40" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="218" y="123" width="16" height="16"/>
+        <text class="dead-title" x="242" y="135.5">Denied</text>
+        <rect class="dead-box" x="206" y="163" width="138" height="40" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="218" y="175" width="16" height="16"/>
+        <text class="dead-title" x="242" y="187.5">Dormant</text>
+        <rect class="dead-box" x="206" y="215" width="138" height="40" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="218" y="227" width="16" height="16"/>
+        <text class="dead-title" x="242" y="239.5">Withdrawn</text>
+      </svg>
+    </div>
+
+    <div class="status-key" aria-hidden="true">
+      <span><i class="key-swatch"></i>Main path</span>
+      <span><i class="key-swatch dashed"></i>Dead end</span>
+      <span><i class="key-swatch done"></i>Final status</span>
+      <span><i class="key-line"></i>Pre-Award ends · Post-Award begins</span>
+    </div>
+
+    <div class="phase-cards">
+      <article class="phase-card reveal">
+        <div class="phase-card-head">
+          <h3>Pre-Award</h3>
+          <a class="team-tag" href="index.html">Stages 01–04</a>
+        </div>
+        <span class="k">Main path</span>
+        <div class="status-row">
+          <span class="status-chip">In Development</span><span class="status-arrow" aria-label="then">→</span><span class="status-chip">Submitted</span>
+        </div>
+        <span class="k">Dead ends</span>
+        <div class="status-row">
+          <span class="status-chip dead">Cancelled</span><span class="status-chip dead">Denied</span><span class="status-chip dead">Dormant</span><span class="status-chip dead">Withdrawn</span>
+        </div>
+        <p>A grant can be cancelled while it's still in development. Once it's submitted, it can be denied, go dormant, or be withdrawn, or it can be selected and move into Post-Award.</p>
+      </article>
+      <article class="phase-card reveal">
+        <div class="phase-card-head">
+          <h3>Post-Award</h3>
+          <a class="team-tag" href="index.html">Stages 05–10</a>
+        </div>
+        <span class="k">Main path</span>
+        <div class="status-row">
+          <span class="status-chip">Selected</span><span class="status-arrow" aria-label="then">→</span><span class="status-chip">Awarded</span><span class="status-arrow" aria-label="then">→</span><span class="status-chip">In Closeout</span><span class="status-arrow" aria-label="then">→</span><span class="status-chip done">Completed</span>
+        </div>
+        <span class="k">Dead ends</span>
+        <div class="status-row"><span class="status-none">None</span></div>
+        <p>Post-Award starts at Selected, which matches the grant life cycle, where Post-Award begins with the Notice of Award. From there, a grant moves straight through to Completed.</p>
+      </article>
+    </div>
+  </section>
+
   <!-- ============ TEAMS ============ -->
   <section class="block" id="teams">
     <div class="block-heading">
-      <span class="idx">02</span>
+      <span class="idx">03</span>
       <h2>The Teams</h2>
       <span class="sub">// two workstreams, one build</span>
     </div>
@@ -1155,7 +1456,7 @@
   <!-- ============ VALUES ============ -->
   <section class="block" id="values">
     <div class="block-heading">
-      <span class="idx">03</span>
+      <span class="idx">04</span>
       <h2>Values</h2>
       <span class="sub">// what we hold the build to</span>
     </div>
