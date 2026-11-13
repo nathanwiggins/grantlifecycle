@@ -556,13 +556,6 @@
   .edge.dead{ stroke-dasharray: 3 4; }
   .arrowhead.dead{ fill: var(--text-faint); }
   .boundary{ stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 6 5; }
-  .boundary-label{
-    font-family: var(--font-mono);
-    font-size: 10.5px;
-    letter-spacing: 0.12em;
-    fill: var(--accent-bright);
-  }
-  .boundary-note{ font-family: var(--font-body); font-size: 14px; fill: var(--text-dim); }
   .flow.slow{ animation-duration: 7s; }
 
   .status-key{
@@ -643,7 +636,6 @@
   .status-chip.dead{ border-style: dashed; border-color: var(--text-faint); background: transparent; color: var(--text-dim); }
   .status-chip.done{ background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .status-arrow{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-bright); }
-  .status-none{ font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-faint); }
 
   /* ---------- Teams ---------- */
   .teams{
@@ -1207,13 +1199,13 @@
       <h2>Grant Statuses</h2>
       <span class="sub">// every place a grant can land</span>
     </div>
-    <p class="block-intro">Every grant in the system carries one of these statuses. Most grants move forward along the main path, but four statuses are dead ends where a grant stops. The red dashed line marks where Pre-Award ends and Post-Award begins.</p>
+    <p class="block-intro">Every grant in the system carries one of these statuses. Most grants move forward along the main path, but six statuses are dead ends where a grant stops. The red dashed line marks where Pre-Award ends and Post-Award begins.</p>
 
     <div class="map-panel reveal">
       <!-- Wide layout -->
       <svg class="map map-wide" viewBox="0 0 1000 344" role="img" aria-labelledby="stw-t stw-d">
         <title id="stw-t">Grant status flow chart</title>
-        <desc id="stw-d">Pre-Award: a grant starts In Development, which leads either to Cancelled, a dead end, or to Submitted. Submitted leads to Denied, Dormant or Withdrawn, all dead ends, or to Selected. Selected is where Pre-Award ends and Post-Award begins. Post-Award: Selected, then Awarded, then In Closeout, then Completed.</desc>
+        <desc id="stw-d">Pre-Award: a grant starts In Development, which leads either to Cancelled, a dead end, or to Submitted. Submitted leads to Denied, Dormant or Withdrawn, all dead ends, or to Selected. Selected is where Pre-Award ends and Post-Award begins. Post-Award: Selected leads either to Declined, a dead end, or to Awarded. Awarded leads either to Terminated, a dead end, or to In Closeout, then Completed.</desc>
         <defs>
           <marker id="sw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
             <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
@@ -1225,7 +1217,7 @@
 
         <!-- phase zones -->
         <rect class="zone" x="12" y="12" width="324" height="320" rx="14"/>
-        <rect class="zone" x="352" y="12" width="636" height="136" rx="14"/>
+        <rect class="zone" x="352" y="12" width="636" height="208" rx="14"/>
         <text class="zone-label" x="30" y="38">PRE-AWARD <tspan class="zone-sub">· STAGES 01–04</tspan></text>
         <text class="zone-label" x="370" y="38">POST-AWARD <tspan class="zone-sub">· STAGES 05–10</tspan></text>
 
@@ -1243,12 +1235,11 @@
         <path class="edge dead" d="M172,182 H188" marker-end="url(#sw-d)"/>
         <path class="edge dead" d="M172,238 H188" marker-end="url(#sw-d)"/>
         <path class="edge dead" d="M172,294 H188" marker-end="url(#sw-d)"/>
+        <path class="edge dead" d="M436,114 V158" marker-end="url(#sw-d)"/>
+        <path class="edge dead" d="M592,114 V158" marker-end="url(#sw-d)"/>
 
         <!-- Pre-Award / Post-Award boundary -->
         <line class="boundary" x1="344" y1="4" x2="344" y2="340"/>
-        <line class="boundary" x1="344" y1="196" x2="364" y2="196"/>
-        <text class="boundary-label" x="374" y="200">PRE-AWARD ENDS · POST-AWARD BEGINS</text>
-        <text class="boundary-note" x="374" y="224">A grant crosses into Post-Award once the sponsor selects it.</text>
 
         <!-- statuses: main path -->
         <rect class="st-box" x="34" y="66" width="124" height="48" rx="10"/>
@@ -1277,12 +1268,18 @@
         <rect class="dead-box" x="190" y="272" width="124" height="44" rx="10"/>
         <use class="dead-ic" href="#i-stop" x="202" y="286" width="16" height="16"/>
         <text class="dead-title" x="226" y="298.5">Withdrawn</text>
+        <rect class="dead-box" x="374" y="160" width="124" height="44" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="386" y="174" width="16" height="16"/>
+        <text class="dead-title" x="410" y="186.5">Declined</text>
+        <rect class="dead-box" x="530" y="160" width="124" height="44" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="542" y="174" width="16" height="16"/>
+        <text class="dead-title" x="566" y="186.5">Terminated</text>
       </svg>
 
       <!-- Narrow (phone) layout -->
       <svg class="map map-narrow" viewBox="0 0 360 666" role="img" aria-labelledby="stn-t stn-d">
         <title id="stn-t">Grant status flow chart</title>
-        <desc id="stn-d">Pre-Award: a grant starts In Development, which leads either to Cancelled, a dead end, or to Submitted. Submitted leads to Denied, Dormant or Withdrawn, all dead ends, or to Selected. Selected is where Pre-Award ends and Post-Award begins. Post-Award: Selected, then Awarded, then In Closeout, then Completed.</desc>
+        <desc id="stn-d">Pre-Award: a grant starts In Development, which leads either to Cancelled, a dead end, or to Submitted. Submitted leads to Denied, Dormant or Withdrawn, all dead ends, or to Selected. Selected is where Pre-Award ends and Post-Award begins. Post-Award: Selected leads either to Declined, a dead end, or to Awarded. Awarded leads either to Terminated, a dead end, or to In Closeout, then Completed.</desc>
         <defs>
           <marker id="sn-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" markerUnits="userSpaceOnUse" orient="auto-start-reverse">
             <path class="arrowhead" d="M0,1 L9,5 L0,9 z"/>
@@ -1312,14 +1309,11 @@
         <path class="edge dead" d="M190,131 H204" marker-end="url(#sn-d)"/>
         <path class="edge dead" d="M190,183 H204" marker-end="url(#sn-d)"/>
         <path class="edge dead" d="M190,235 H204" marker-end="url(#sn-d)"/>
+        <path class="edge dead" d="M176,387 H204" marker-end="url(#sn-d)"/>
+        <path class="edge dead" d="M176,463 H204" marker-end="url(#sn-d)"/>
 
         <!-- Pre-Award / Post-Award boundary -->
         <line class="boundary" x1="0" y1="296" x2="360" y2="296"/>
-        <text class="boundary-label" x="344" y="288" text-anchor="end">PRE-AWARD ENDS ↑</text>
-        <text class="boundary-label" x="344" y="314" text-anchor="end">POST-AWARD BEGINS ↓</text>
-        <text class="boundary-note" x="196" y="384">A grant crosses into</text>
-        <text class="boundary-note" x="196" y="402">Post-Award once the</text>
-        <text class="boundary-note" x="196" y="420">sponsor selects it.</text>
 
         <!-- statuses: main path -->
         <rect class="st-box" x="20" y="50" width="156" height="46" rx="10"/>
@@ -1348,6 +1342,12 @@
         <rect class="dead-box" x="206" y="215" width="138" height="40" rx="10"/>
         <use class="dead-ic" href="#i-stop" x="218" y="227" width="16" height="16"/>
         <text class="dead-title" x="242" y="239.5">Withdrawn</text>
+        <rect class="dead-box" x="206" y="367" width="138" height="40" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="218" y="379" width="16" height="16"/>
+        <text class="dead-title" x="242" y="391.5">Declined</text>
+        <rect class="dead-box" x="206" y="443" width="138" height="40" rx="10"/>
+        <use class="dead-ic" href="#i-stop" x="218" y="455" width="16" height="16"/>
+        <text class="dead-title" x="242" y="467.5">Terminated</text>
       </svg>
     </div>
 
@@ -1384,8 +1384,10 @@
           <span class="status-chip">Selected</span><span class="status-arrow" aria-label="then">→</span><span class="status-chip">Awarded</span><span class="status-arrow" aria-label="then">→</span><span class="status-chip">In Closeout</span><span class="status-arrow" aria-label="then">→</span><span class="status-chip done">Completed</span>
         </div>
         <span class="k">Dead ends</span>
-        <div class="status-row"><span class="status-none">None</span></div>
-        <p>Post-Award starts at Selected, which matches the grant life cycle, where Post-Award begins with the Notice of Award. From there, a grant moves straight through to Completed.</p>
+        <div class="status-row">
+          <span class="status-chip dead">Declined</span><span class="status-chip dead">Terminated</span>
+        </div>
+        <p>Post-Award starts at Selected, which matches the grant life cycle, where Post-Award begins with the Notice of Award. A selected grant can still end as Declined, and an awarded grant can end as Terminated. Otherwise, it moves through to Completed.</p>
       </article>
     </div>
   </section>
