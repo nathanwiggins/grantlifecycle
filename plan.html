@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPARC Data Plan — SUU Sponsored Programs</title>
-<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system takes in Banner data through an Argos email handoff, keeps it in Google Sheets as its backend, and organizes the work into five modules, the statuses a grant moves through, who is building it, and the values guiding it.">
+<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system takes in Banner data through an Argos email handoff, keeps it in Google Sheets as its backend, and organizes the work into five modules, the statuses a grant moves through, who owns each module, and the values guiding it.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23db0000'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -637,47 +637,7 @@
   .status-chip.done{ background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
   .status-arrow{ font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-bright); }
 
-  /* ---------- Teams ---------- */
-  .teams{
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
-  }
-  @media (max-width: 860px){
-    .teams{ grid-template-columns: 1fr; }
-  }
-  .team{
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    gap: 1.4rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.6rem 1.6rem 1.75rem;
-  }
-  .team::before{
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 0;
-    height: 3px;
-    background: var(--accent);
-  }
-  .team-head{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-  }
-  .team h3{
-    font-family: var(--font-display);
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: 0.01em;
-  }
+  /* ---------- Shared small labels ---------- */
   .team-tag{
     font-family: var(--font-mono);
     font-size: 0.65rem;
@@ -697,110 +657,110 @@
     color: var(--text-faint);
     margin-bottom: 0.45rem;
   }
-  .names{
-    margin: 0;
-    font-weight: 600;
-    font-size: 1.02rem;
-  }
-  .names i{
-    font-style: normal;
-    font-family: var(--font-mono);
-    color: var(--accent-bright);
-    margin: 0 0.35rem;
-  }
-  .core{
-    border-left: 2px solid var(--accent);
-    padding-left: 1rem;
-  }
-  .core-line{
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 1.15rem;
-    line-height: 1.3;
-    margin: 0 0 0.5rem;
-  }
-  .core p:not(.core-line){
-    margin: 0;
-    color: var(--text-dim);
-    font-size: 0.94rem;
-  }
-  .chips{
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.45rem;
-  }
-  .chips li{
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    padding: 0.3rem 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    color: var(--text-dim);
-    background: var(--surface-2);
-  }
-  .pipeline{
-    list-style: none;
-    margin: 0;
-    padding: 0;
+
+  /* ---------- Assignments ---------- */
+  .assignments{
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0.7rem;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 0.9rem;
   }
-  .pipeline li{
+  @media (max-width: 900px){
+    .assignments{ grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 600px){
+    .assignments{ grid-template-columns: 1fr; gap: 0.7rem; }
+  }
+  .assign{
     position: relative;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 0.75rem 0.85rem;
-  }
-  .pipeline b{
-    display: block;
-    font-family: var(--font-mono);
-    font-weight: 500;
-    font-size: 0.76rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent-bright);
-  }
-  .pipeline span{
-    display: block;
-    margin-top: 0.25rem;
-    font-size: 0.86rem;
-    line-height: 1.4;
-    color: var(--text-dim);
-  }
-  .pipeline li:not(:last-child)::after{
-    content: "→";
-    position: absolute;
-    z-index: 1;
-    top: 50%;
-    right: -0.9rem;
-    transform: translateY(-50%);
-    width: 1.1rem;
-    height: 1.1rem;
-    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     background: var(--surface);
     border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.2rem 1.3rem;
+  }
+  .assign::before{
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .assign-head{
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "ic num"
+      "title title";
+    align-items: center;
+    row-gap: 0.9rem;
+  }
+  .assign-ic{
+    grid-area: ic;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 10px;
+    background: var(--accent-wash);
     color: var(--accent-bright);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  @media (max-width: 520px){
-    .pipeline{ grid-template-columns: 1fr; }
-    .pipeline li:not(:last-child)::after{
-      content: "↓";
-      top: auto;
-      right: auto;
-      left: 50%;
-      bottom: -0.9rem;
-      transform: translateX(-50%);
+  .assign-ic svg{ width: 22px; height: 22px; }
+  .assign-num{
+    grid-area: num;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--text-faint);
+  }
+  .assign h3{
+    grid-area: title;
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin: 0;
+  }
+  .assign-owner{
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .avatar{
+    flex-shrink: 0;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .assign-owner .k{ margin-bottom: 0.05rem; }
+  .assign-owner strong{
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  @media (max-width: 600px){
+    .assign{ gap: 0.8rem; padding: 1rem 1.1rem 1.1rem; }
+    .assign-head{
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: "ic title num";
+      column-gap: 0.8rem;
     }
+    .assign-owner{ padding-top: 0.8rem; }
   }
 
   /* ---------- Values ---------- */
@@ -889,7 +849,6 @@
     .topbar .mark .plate{ height: 40px; padding: 0.4rem 0.7rem; border-radius: 10px; }
     .topbar .mark span.label{ display: none; }
     .nav-pill{ font-size: 0.62rem; padding: 0.35rem 0.6rem; }
-    .team{ padding: 1.35rem 1.2rem 1.5rem; }
   }
 </style>
 </head>
@@ -943,10 +902,10 @@
   <div>
     <p class="eyebrow">SPARC — System Planning</p>
     <h1>SPARC <em>Data</em></h1>
-    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the statuses every grant moves through, the two teams building it, and the five values we're holding it to.</p>
+    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the statuses every grant moves through, who owns each module, and the five values we're holding it to.</p>
     <div class="stat-row">
       <div class="stat-chip"><b>1</b><span>System</span></div>
-      <div class="stat-chip"><b>2</b><span>Teams</span></div>
+      <div class="stat-chip"><b>5</b><span>Modules</span></div>
       <div class="stat-chip"><b>5</b><span>Values</span></div>
     </div>
   </div>
@@ -1392,64 +1351,73 @@
     </div>
   </section>
 
-  <!-- ============ TEAMS ============ -->
-  <section class="block" id="teams">
+  <!-- ============ ASSIGNMENTS ============ -->
+  <section class="block" id="assignments">
     <div class="block-heading">
       <span class="idx">03</span>
-      <h2>The Teams</h2>
-      <span class="sub">// two workstreams, one build</span>
+      <h2>Assignments</h2>
+      <span class="sub">// who owns each module</span>
     </div>
-    <p class="block-intro">The build splits into two workstreams: what people see and touch, and the machinery underneath that keeps the data straight.</p>
+    <p class="block-intro">Each of the system's five modules has an owner on the team.</p>
 
-    <div class="teams">
-      <article class="team reveal">
-        <div class="team-head">
-          <h3>Product Design</h3>
-          <span class="team-tag">Workstream A</span>
+    <div class="assignments">
+      <article class="assign reveal">
+        <div class="assign-head">
+          <span class="assign-ic" aria-hidden="true"><svg><use href="#i-pre"/></svg></span>
+          <h3>Pre-Award</h3>
+          <span class="assign-num">01</span>
         </div>
-        <div>
-          <span class="k">Lead</span>
-          <p class="names">Josi<i>+</i>Santhosh<i>+</i>Jane</p>
-        </div>
-        <div class="core">
-          <span class="k">Core idea</span>
-          <p class="core-line">Make it a joy to use.</p>
-          <p>This team owns what the system looks like and how people move through it. The goal is an interface with real personality: polished, friendly, and colorful enough that working with SPARC data feels inviting instead of like a chore.</p>
-        </div>
-        <div>
-          <span class="k">From the whiteboard</span>
-          <ul class="chips">
-            <li>Fancy</li>
-            <li>Cute</li>
-            <li>Fun colors</li>
-            <li>What it looks like</li>
-            <li>How people interact</li>
-            <li>UI — User Interface</li>
-          </ul>
+        <div class="assign-owner">
+          <span class="avatar" aria-hidden="true">J</span>
+          <div><span class="k">Owner</span><strong>Jane</strong></div>
         </div>
       </article>
 
-      <article class="team reveal">
-        <div class="team-head">
-          <h3>System Infrastructure</h3>
-          <span class="team-tag">Workstream B</span>
+      <article class="assign reveal">
+        <div class="assign-head">
+          <span class="assign-ic" aria-hidden="true"><svg><use href="#i-post"/></svg></span>
+          <h3>Post-Award</h3>
+          <span class="assign-num">02</span>
         </div>
-        <div>
-          <span class="k">Lead</span>
-          <p class="names">Owen<i>+</i>Dohyeon</p>
+        <div class="assign-owner">
+          <span class="avatar" aria-hidden="true">O</span>
+          <div><span class="k">Owner</span><strong>Owen</strong></div>
         </div>
-        <div class="core">
-          <span class="k">Core idea</span>
-          <p class="core-line">Make the data dependable.</p>
-          <p>This team owns the machinery underneath: how data gets into the system, how it's kept in order, and how it comes back out the moment someone needs it. Every screen the design team builds stands on this.</p>
+      </article>
+
+      <article class="assign reveal">
+        <div class="assign-head">
+          <span class="assign-ic" aria-hidden="true"><svg><use href="#i-report"/></svg></span>
+          <h3>Reporting</h3>
+          <span class="assign-num">03</span>
         </div>
-        <div>
-          <span class="k">From the whiteboard</span>
-          <ol class="pipeline">
-            <li><b>Data Put</b><span>Get data into the system</span></li>
-            <li><b>Organize</b><span>Keep it structured and consistent</span></li>
-            <li><b>Fetch</b><span>Hand back the right data on request</span></li>
-          </ol>
+        <div class="assign-owner">
+          <span class="avatar" aria-hidden="true">S</span>
+          <div><span class="k">Owner</span><strong>Santhosh</strong></div>
+        </div>
+      </article>
+
+      <article class="assign reveal">
+        <div class="assign-head">
+          <span class="assign-ic" aria-hidden="true"><svg><use href="#i-forms"/></svg></span>
+          <h3>Forms</h3>
+          <span class="assign-num">04</span>
+        </div>
+        <div class="assign-owner">
+          <span class="avatar" aria-hidden="true">J</span>
+          <div><span class="k">Owner</span><strong>Josi</strong></div>
+        </div>
+      </article>
+
+      <article class="assign reveal">
+        <div class="assign-head">
+          <span class="assign-ic" aria-hidden="true"><svg><use href="#i-cal"/></svg></span>
+          <h3>Calendar</h3>
+          <span class="assign-num">05</span>
+        </div>
+        <div class="assign-owner">
+          <span class="avatar" aria-hidden="true">D</span>
+          <div><span class="k">Owner</span><strong>Dohyeon</strong></div>
         </div>
       </article>
     </div>
@@ -1467,7 +1435,7 @@
       <li><span class="v-idx">02</span><span class="v-word">Helpful</span><span class="v-mark" aria-hidden="true"></span></li>
       <li><span class="v-idx">03</span><span class="v-word">Dependable</span><span class="v-mark" aria-hidden="true"></span></li>
       <li><span class="v-idx">04</span><span class="v-word">Transparent</span><span class="v-mark" aria-hidden="true"></span></li>
-      <li><span class="v-idx">05</span><span class="v-word">Fluid</span><span class="v-mark" aria-hidden="true"></span></li>
+      <li><span class="v-idx">05</span><span class="v-word">Responsive</span><span class="v-mark" aria-hidden="true"></span></li>
     </ol>
   </section>
 
