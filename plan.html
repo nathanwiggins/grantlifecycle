@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SPARC Data Plan — SUU Sponsored Programs</title>
-<meta name="description" content="The SPARC Data system plan from our team brainstorm: how the new system takes in Banner data through an Argos email handoff, keeps it in Google Sheets as its backend, and organizes the work into five modules, the statuses a grant moves through, who owns each module, and the values guiding it.">
+<meta name="description" content="The plan for BANISTER (Better Awards, Notarization, Intelligence, Submissions and Tracking Environment for Research), the new SPARC Data system: how it takes in Banner data through an Argos email handoff, keeps it in Google Sheets as its backend, and organizes the work into five modules, the statuses a grant moves through, who owns each module, and the values guiding it.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='44' fill='%23db0000'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +26,9 @@
     --accent-dim: #6e0000;
     --accent-wash: rgba(219, 0, 0, 0.12);
     --on-accent: #ffffff;
+    --glow: rgba(255, 59, 59, 0.55);
+    --bolt-core: #ffffff;
+    --flash-core: rgba(255, 255, 255, 0.22);
     --font-display: 'Orbitron', sans-serif;
     --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
     --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
@@ -50,6 +53,9 @@
       --accent-dim: #f6cccc;
       --accent-wash: rgba(219, 0, 0, 0.07);
       --on-accent: #ffffff;
+      --glow: rgba(219, 0, 0, 0.35);
+      --bolt-core: #ffffff;
+      --flash-core: rgba(255, 255, 255, 0.7);
     }
   }
 
@@ -156,6 +162,309 @@
   .nav-pill:focus-visible{
     color: var(--accent-bright);
     border-color: var(--accent-dim);
+  }
+
+  /* ---------- Name reveal: BANISTER ---------- */
+  .name-block{
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem) 0;
+  }
+  .name-block .eyebrow{ justify-content: center; }
+  .name-stage{
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background:
+      radial-gradient(ellipse 60% 70% at 50% 0%, var(--accent-wash), transparent 70%),
+      var(--panel);
+    padding: clamp(1.75rem, 5vw, 3.5rem) clamp(1.25rem, 4vw, 3rem);
+  }
+  .name-stage::before{
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(var(--border) 1px, transparent 1.4px);
+    background-size: 22px 22px;
+    opacity: 0.6;
+    pointer-events: none;
+  }
+  .name-stage.shake{ animation: shake 0.38s linear; }
+  @keyframes shake{
+    0%, 100%{ transform: translate(0, 0); }
+    20%{ transform: translate(-3px, 1px); }
+    40%{ transform: translate(3px, -1px); }
+    60%{ transform: translate(-2px, 0); }
+    80%{ transform: translate(2px, 1px); }
+  }
+  .brand-h{
+    position: relative;
+    z-index: 1;
+    margin: 0;
+    font-weight: inherit;
+  }
+  .brand{
+    display: grid;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .brand:focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 10px;
+    border-radius: 14px;
+  }
+  .brand-full,
+  .brand-acro{
+    grid-area: 1 / 1;
+    justify-self: center;
+    align-self: center;
+  }
+
+  /* Full name: "Better" branches out to five words; the system sits underneath */
+  .brand-full{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(1.1rem, 3vw, 2rem);
+    transition: opacity 0.35s ease;
+  }
+  .brand-row{
+    display: flex;
+    align-items: center;
+  }
+  .better{
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(1.9rem, 8vw, 5.2rem);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .stem{
+    flex-shrink: 0;
+    width: clamp(14px, 3vw, 36px);
+    height: 2px;
+    margin-left: clamp(4px, 1vw, 12px);
+    background: var(--accent);
+  }
+  .branches{
+    --pad: clamp(1rem, 2.4vw, 1.75rem);
+    position: relative;
+    display: block;
+    padding-left: var(--pad);
+    font-size: clamp(1.05rem, 3.3vw, 2.1rem);
+    font-weight: 600;
+    line-height: 1.25;
+  }
+  .branches::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.625em;
+    bottom: 0.625em;
+    width: 2px;
+    background: var(--accent);
+  }
+  .w{
+    position: relative;
+    display: block;
+    white-space: nowrap;
+  }
+  .w::before{
+    content: "";
+    position: absolute;
+    left: calc(-1 * var(--pad));
+    top: 50%;
+    width: calc(var(--pad) * 0.6);
+    height: 2px;
+    margin-top: -1px;
+    background: var(--accent);
+  }
+  .and{
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 0.45em;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-right: 0.6em;
+    vertical-align: 0.25em;
+  }
+  .ini{
+    display: inline-block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    color: var(--accent);
+    transition: text-shadow var(--motion-fast);
+  }
+  .brand:hover .ini{ text-shadow: 0 0 14px var(--glow); }
+  .env{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 0.9rem;
+    width: 100%;
+    padding-top: clamp(1rem, 2.6vw, 1.6rem);
+    border-top: 1px solid var(--border);
+  }
+  .env-tag{
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+  }
+  .env-name{
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(0.78rem, 2.3vw, 1.45rem);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  @media (min-width: 721px){
+    .env-name{ letter-spacing: 0.24em; }
+  }
+
+  /* Acronym: the initials fly together into BANISTER */
+  .brand-acro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.7rem, 1.8vw, 1.1rem);
+    opacity: 0;
+    pointer-events: none;
+  }
+  .is-acro .brand-acro,
+  .returning .brand-acro{ opacity: 1; }
+  .is-acro .brand-full{ opacity: 0; }
+  .returning .brand-full{ transition-delay: 0.25s; }
+  .is-acro .brand-full .ini,
+  .returning .brand-full .ini{ opacity: 0; }
+  .acro-word{
+    display: block;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(2.4rem, 11vw, 8rem);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .al{
+    display: inline-block;
+    will-change: transform;
+  }
+  .acro-cap{
+    display: block;
+    max-width: 62ch;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-align: center;
+    color: var(--text-faint);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .acro-cap b{ font-weight: 500; color: var(--accent-bright); }
+  .charged .acro-cap{ opacity: 1; transform: none; }
+  .charged .al{
+    text-shadow: 0 0 14px var(--glow);
+    animation: hum 5s ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .zapping .al{ animation: zap 0.8s ease-out both; }
+  @keyframes zap{
+    0%{ color: var(--bolt-core); text-shadow: 0 0 6px var(--bolt-core), 0 0 26px var(--accent-bright), 0 0 60px var(--accent); }
+    25%{ color: var(--text); text-shadow: 0 0 20px var(--accent-bright), 0 0 40px var(--glow); }
+    40%{ color: var(--bolt-core); text-shadow: 0 0 6px var(--bolt-core), 0 0 30px var(--accent-bright); }
+    100%{ color: var(--text); text-shadow: 0 0 14px var(--glow); }
+  }
+  @keyframes hum{
+    0%, 46%, 54%, 100%{ text-shadow: 0 0 14px var(--glow); }
+    48%{ text-shadow: 0 0 4px var(--bolt-core), 0 0 26px var(--accent-bright); }
+    51%{ text-shadow: 0 0 10px var(--glow); }
+  }
+
+  /* Lightning */
+  .bolts{
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .bolt-glow,
+  .bolt-core{
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 100;
+    animation: bolt-draw 0.1s linear both, bolt-flicker 0.75s ease-out both;
+    animation-delay: var(--d, 0s);
+  }
+  .bolt-glow{ stroke: var(--accent-bright); stroke-width: 7; }
+  .bolt-core{ stroke: var(--bolt-core); stroke-width: 1.8; }
+  .bolt-glow.fork{ stroke-width: 4; }
+  .bolt-core.fork{ stroke-width: 1; }
+  @keyframes bolt-draw{
+    from{ stroke-dashoffset: 100; }
+    to{ stroke-dashoffset: 0; }
+  }
+  @keyframes bolt-flicker{
+    0%{ opacity: 1; }
+    12%{ opacity: 0.25; }
+    22%{ opacity: 1; }
+    38%{ opacity: 0.4; }
+    52%{ opacity: 0.95; }
+    100%{ opacity: 0; }
+  }
+  .flash{
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 70% 80% at 50% 45%, var(--flash-core), var(--accent-wash) 45%, transparent 75%);
+  }
+  .flash.go{ animation: flash 0.6s ease-out; }
+  @keyframes flash{
+    0%{ opacity: 0; }
+    8%{ opacity: 1; }
+    18%{ opacity: 0.25; }
+    28%{ opacity: 0.85; }
+    100%{ opacity: 0; }
+  }
+  .brand-hint{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    margin: 1rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .brand-hint svg{
+    width: 14px;
+    height: 14px;
+    color: var(--accent-bright);
   }
 
   /* ---------- Hero ---------- */
@@ -898,6 +1207,47 @@
   <a class="nav-pill" href="index.html">← Life Cycle Map</a>
 </div>
 
+<section class="name-block" aria-labelledby="name-eyebrow">
+  <p class="eyebrow" id="name-eyebrow">Introducing the new system</p>
+  <div class="name-stage">
+    <div class="flash" aria-hidden="true"></div>
+    <h2 class="brand-h">
+      <button type="button" class="brand" id="brand" aria-pressed="false" aria-describedby="brand-hint" aria-label="Better Awards, Notarization, Intelligence, Submissions and Tracking Environment for Research (BANISTER)">
+        <span class="brand-full">
+          <span class="brand-row">
+            <span class="better"><span class="ini">B</span>etter</span>
+            <span class="stem"></span>
+            <span class="branches">
+              <span class="w"><span class="ini">A</span>wards</span>
+              <span class="w"><span class="ini">N</span>otarization</span>
+              <span class="w"><span class="ini">I</span>ntelligence</span>
+              <span class="w"><span class="ini">S</span>ubmissions</span>
+              <span class="w"><span class="and">and</span><span class="ini">T</span>racking</span>
+            </span>
+          </span>
+          <span class="env">
+            <span class="env-tag">The system</span>
+            <span class="env-name"><span class="ini">E</span>nvironment for <span class="ini">R</span>esearch</span>
+          </span>
+        </span>
+        <span class="brand-acro">
+          <span class="acro-word"><span class="al" style="--d:-0.3s">B</span><span class="al" style="--d:-2.1s">A</span><span class="al" style="--d:-3.7s">N</span><span class="al" style="--d:-1.2s">I</span><span class="al" style="--d:-4.4s">S</span><span class="al" style="--d:-0.9s">T</span><span class="al" style="--d:-2.8s">E</span><span class="al" style="--d:-4.9s">R</span></span>
+          <span class="acro-cap"><b>B</b>etter <b>A</b>wards, <b>N</b>otarization, <b>I</b>ntelligence, <b>S</b>ubmissions and <b>T</b>racking <b>E</b>nvironment for <b>R</b>esearch</span>
+        </span>
+      </button>
+    </h2>
+    <svg class="bolts" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="bolt-blur" filterUnits="userSpaceOnUse" x="-100" y="-100" width="4000" height="3000">
+          <feGaussianBlur stdDeviation="3"/>
+        </filter>
+      </defs>
+      <g class="bolt-layer"></g>
+    </svg>
+  </div>
+  <p class="brand-hint" id="brand-hint"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg><span data-hint>Click the name to form the acronym</span></p>
+</section>
+
 <header class="hero">
   <div>
     <p class="eyebrow">SPARC — System Planning</p>
@@ -1467,6 +1817,169 @@
     });
   }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
   items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+<script>
+/* BANISTER name reveal: the initials of the full name fly together into the
+   acronym, lightning strikes as they land, and a second click sends them back. */
+(function(){
+  var brand = document.getElementById('brand');
+  if (!brand) return;
+  var stage = brand.closest('.name-stage');
+  var layer = stage.querySelector('.bolt-layer');
+  var svg = stage.querySelector('.bolts');
+  var flash = stage.querySelector('.flash');
+  var hint = document.querySelector('[data-hint]');
+  var inis = Array.prototype.slice.call(brand.querySelectorAll('.brand-full .ini'));
+  var letters = Array.prototype.slice.call(brand.querySelectorAll('.al'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NS = 'http://www.w3.org/2000/svg';
+  var FLY = 700;
+  var STAGGER = 45;
+  var busy = false;
+  var landing = [];
+
+  // Where each acronym letter will come to rest, relative to the stage, so the
+  // lightning can aim at a letter's final spot while it is still in flight.
+  function recordLanding(){
+    var box = stage.getBoundingClientRect();
+    landing = letters.map(function(el){
+      var r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - box.left, y: r.top - box.top + r.height * 0.2 };
+    });
+  }
+
+  // Transform that places a letter of the acronym exactly over its initial in the full name.
+  function offsetOnto(target, el){
+    var a = target.getBoundingClientRect();
+    var b = el.getBoundingClientRect();
+    var dx = (a.left + a.width / 2) - (b.left + b.width / 2);
+    var dy = (a.top + a.height / 2) - (b.top + b.height / 2);
+    var s = b.height ? a.height / b.height : 1;
+    return 'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')';
+  }
+
+  function restart(el, cls){
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  }
+
+  function jagged(x0, y0, x1, y1, n){
+    n = n || Math.max(8, Math.round(Math.abs(y1 - y0) / 16));
+    var pts = [[x0, y0]];
+    for (var i = 1; i < n; i++){
+      var t = i / n;
+      pts.push([
+        x0 + (x1 - x0) * t + (Math.random() - 0.5) * 26 * (1 - t * 0.5),
+        y0 + (y1 - y0) * t + (Math.random() - 0.5) * 6
+      ]);
+    }
+    pts.push([x1, y1]);
+    return pts;
+  }
+
+  function addBolt(group, pts, fork){
+    var d = 'M' + pts.map(function(p){ return p[0].toFixed(1) + ',' + p[1].toFixed(1); }).join(' L');
+    ['bolt-glow', 'bolt-core'].forEach(function(cls){
+      var path = document.createElementNS(NS, 'path');
+      path.setAttribute('d', d);
+      path.setAttribute('pathLength', '100');
+      path.setAttribute('class', cls + (fork ? ' fork' : ''));
+      if (cls === 'bolt-glow') path.setAttribute('filter', 'url(#bolt-blur)');
+      group.appendChild(path);
+    });
+  }
+
+  function drawLightning(){
+    var box = stage.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + box.width + ' ' + box.height);
+    layer.textContent = '';
+    var order = letters.map(function(_, i){ return i; });
+    for (var i = order.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = order[i]; order[i] = order[j]; order[j] = tmp;
+    }
+    order.slice(0, 4).forEach(function(idx, k){
+      var tx = landing[idx].x;
+      var ty = landing[idx].y;
+      var sx = tx + (Math.random() - 0.5) * box.width * 0.3;
+      var main = jagged(sx, -8, tx, ty);
+      var group = document.createElementNS(NS, 'g');
+      group.style.setProperty('--d', (k * 70) + 'ms');
+      addBolt(group, main, false);
+      var m = main[Math.floor(main.length * (0.35 + Math.random() * 0.25))];
+      var side = Math.random() < 0.5 ? -1 : 1;
+      addBolt(group, jagged(m[0], m[1], m[0] + side * (30 + Math.random() * 50), m[1] + 30 + Math.random() * 40, 5), true);
+      layer.appendChild(group);
+    });
+    setTimeout(function(){ layer.textContent = ''; }, 1300);
+  }
+
+  function strike(){
+    brand.classList.add('charged', 'zapping');
+    setTimeout(function(){ brand.classList.remove('zapping'); }, 850);
+    restart(stage, 'shake');
+    restart(flash, 'go');
+    drawLightning();
+  }
+
+  function toAcronym(){
+    brand.setAttribute('aria-pressed', 'true');
+    if (hint) hint.textContent = 'Click again for the full name';
+    if (reduce){ brand.classList.add('is-acro', 'charged'); return; }
+    busy = true;
+    recordLanding();
+    letters.forEach(function(el, i){
+      el.style.transition = 'none';
+      el.style.transform = offsetOnto(inis[i], el);
+    });
+    brand.classList.add('is-acro');
+    void brand.offsetWidth;
+    letters.forEach(function(el, i){
+      el.style.transition = 'transform ' + FLY + 'ms cubic-bezier(.2,.85,.25,1) ' + (i * STAGGER) + 'ms';
+      el.style.transform = '';
+    });
+    var land = FLY + (letters.length - 1) * STAGGER;
+    setTimeout(strike, land - 260);
+    setTimeout(function(){
+      letters.forEach(function(el){ el.style.transition = ''; });
+      busy = false;
+    }, land + 50);
+  }
+
+  function toFull(){
+    brand.setAttribute('aria-pressed', 'false');
+    if (hint) hint.textContent = 'Click the name to form the acronym';
+    if (reduce){ brand.classList.remove('is-acro', 'charged'); return; }
+    busy = true;
+    var n = letters.length;
+    var step = STAGGER * 0.6;
+    brand.classList.remove('charged', 'zapping');
+    brand.classList.add('returning');
+    brand.classList.remove('is-acro');
+    letters.forEach(function(el, i){
+      el.style.transition = 'transform ' + FLY + 'ms cubic-bezier(.65,0,.35,1) ' + ((n - 1 - i) * step) + 'ms';
+      el.style.transform = offsetOnto(inis[i], el);
+    });
+    setTimeout(function(){
+      brand.classList.remove('returning');
+      letters.forEach(function(el){
+        el.style.transition = 'none';
+        el.style.transform = '';
+      });
+      void brand.offsetWidth;
+      letters.forEach(function(el){ el.style.transition = ''; });
+      busy = false;
+    }, FLY + (n - 1) * step + 30);
+  }
+
+  brand.addEventListener('click', function(){
+    if (busy) return;
+    if (brand.getAttribute('aria-pressed') === 'true') toFull();
+    else toAcronym();
+  });
 })();
 </script>
 

@@ -68,7 +68,7 @@ Unless a request explicitly says otherwise, keep these intact:
 ## Repo layout
 
 - `index.html` — the live page (everything: markup, CSS, JS, inline).
-- `plan.html` — the SPARC Data system plan (from the team's whiteboard
+- `plan.html` — the plan for BANISTER, the new SPARC Data system (from the team's whiteboard
   brainstorm). Same design system and same self-contained rules as
   `index.html`; linked from the main page's hero.
 - `LifeCycle.md` — the source checklist the page content is drawn from.
