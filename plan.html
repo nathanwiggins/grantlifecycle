@@ -1312,6 +1312,310 @@
     .topbar .mark span.label{ display: none; }
     .nav-pill{ font-size: 0.62rem; padding: 0.35rem 0.6rem; }
   }
+
+  /* ---------- Phase 1 plan ---------- */
+  .p1-progress{
+    list-style: none;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .p1-progress li{ display: flex; align-items: center; gap: 0.5rem; }
+  .p1-dot{
+    width: 0.8rem;
+    height: 0.8rem;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    flex-shrink: 0;
+  }
+  .p1-progress .done .p1-dot{ background: var(--accent); }
+  .p1-progress .now{ color: var(--text); }
+  .p1-progress .now .p1-dot{ box-shadow: 0 0 0 4px var(--accent-wash); }
+  .p1-progress b{
+    font-weight: 600;
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--on-accent);
+    background: var(--accent);
+    border-radius: 999px;
+    padding: 0.1rem 0.5rem;
+  }
+
+  .p1-stack{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+  }
+  .p1-layer{
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    align-items: center;
+    gap: 0.6rem 1.2rem;
+    padding: 0.85rem 1.2rem;
+    border-top: 1px solid var(--border);
+  }
+  .p1-layer:first-child{ border-top: 0; }
+  .p1-layer.mine{ background: var(--accent-wash); box-shadow: inset 3px 0 0 var(--accent); }
+  .p1-layer.mine .k{ color: var(--accent-bright); }
+  .p1-where .k{ margin-bottom: 0.1rem; }
+  .p1-where strong{ display: block; font-weight: 600; line-height: 1.3; }
+  .p1-where code{ font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-dim); }
+  .p1-parts{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .p1-parts li{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.22rem 0.65rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--text-dim);
+  }
+  .p1-layer.mine .p1-parts li{ color: var(--text); border-color: var(--accent-dim); background: var(--surface); }
+  .p1-parts li span{ color: var(--text-faint); margin-left: 0.3rem; }
+  .p1-layer.mine .p1-parts li span{ color: var(--accent-bright); }
+
+  .p1-next{
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.2rem 1.3rem 1.1rem;
+  }
+  .p1-next::before{
+    content: "";
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 3px;
+    background: var(--accent);
+  }
+  .p1-next h3{
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin: 0 0 0.8rem;
+  }
+  .p1-next code, .dd code{
+    font-family: var(--font-mono);
+    font-size: 0.84em;
+    padding: 0.05rem 0.35rem;
+    border-radius: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+  }
+  .p1-steps{
+    list-style: none;
+    counter-reset: step;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .p1-steps li{
+    counter-increment: step;
+    position: relative;
+    padding-left: 2.2rem;
+    font-size: 0.94rem;
+    color: var(--text-dim);
+  }
+  .p1-steps li::before{
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .p1-steps b{ color: var(--text); font-weight: 600; }
+  .p1-done{
+    margin: 1rem 0 0;
+    padding-top: 0.9rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.94rem;
+    color: var(--text-dim);
+  }
+  .p1-done b{ color: var(--accent-bright); }
+  .p1-tip{ margin: 0.4rem 0 0; font-size: 0.86rem; color: var(--text-faint); }
+  .p1-foot{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.9rem;
+  }
+  .p1-foot .k{ margin: 0 0.3rem 0 0; }
+  .p1-foot a{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    text-decoration: none;
+    color: var(--text);
+    padding: 0.22rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    transition: border-color var(--motion-fast), color var(--motion-fast);
+  }
+  .p1-foot a::after{ content: " →"; color: var(--accent-bright); }
+  .p1-foot a:hover, .p1-foot a:focus-visible{ border-color: var(--accent); color: var(--accent-bright); }
+  .p1-copy{ margin-top: 0.8rem; font-size: 0.88rem; color: var(--text-dim); }
+  .p1-copy summary{
+    cursor: pointer;
+    width: fit-content;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--text-faint);
+  }
+  .p1-copy summary:hover{ color: var(--accent-bright); }
+  .p1-copy ol{ margin: 0.5rem 0 0; padding-left: 1.3rem; display: grid; gap: 0.25rem; }
+  @media (max-width: 640px){
+    .p1-layer{ grid-template-columns: 1fr; padding: 0.8rem 1rem; }
+    .p1-next{ padding: 1rem 1rem 0.95rem; }
+  }
+
+  /* ---------- Data dictionary ---------- */
+  .sr{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .dd-tools{ display: grid; gap: 0.7rem; margin-bottom: 1.2rem; }
+  .dd-tools[hidden]{ display: none; }
+  .dd-pills{ display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .dd-pill, .dd-toggle{
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: border-color var(--motion-fast), color var(--motion-fast), background var(--motion-fast);
+  }
+  .dd-pill b{ font-weight: 500; color: var(--text-faint); margin-left: 0.2rem; }
+  .dd-pill:hover, .dd-toggle:hover{ border-color: var(--accent); color: var(--text); }
+  .dd-pill[aria-pressed="true"]{ background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .dd-pill[aria-pressed="true"] b{ color: var(--on-accent); opacity: 0.8; }
+  .dd-row{ display: flex; gap: 0.5rem; }
+  .dd-search{ flex: 1; }
+  .dd-search input{
+    width: 100%;
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    outline: none;
+  }
+  .dd-search input:focus{ border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
+  .dd-search input::placeholder{ color: var(--text-faint); }
+  .dd-count{ margin: 0; }
+  .dd-group{ margin-bottom: 1.4rem; }
+  .dd-group[hidden], .dd-field[hidden]{ display: none; }
+  .dd-group-h{
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+  }
+  .dd-group-h .k{ margin: 0; }
+  .dd-field, .dd-types{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 0.35rem;
+    transition: border-color var(--motion-fast);
+  }
+  .dd-field[open], .dd-types[open]{ border-color: var(--accent-dim); }
+  .dd-field summary, .dd-types summary{
+    list-style: none;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto auto 1rem;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.6rem 0.9rem;
+  }
+  .dd-types summary{ grid-template-columns: minmax(0, 1fr) 1rem; }
+  .dd-field summary::-webkit-details-marker, .dd-types summary::-webkit-details-marker{ display: none; }
+  .dd-field summary:hover .dd-name, .dd-types summary:hover .dd-name{ color: var(--accent-bright); }
+  .dd-field summary:focus-visible, .dd-types summary:focus-visible{ outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 10px; }
+  .dd-name{ font-weight: 600; font-size: 0.95rem; }
+  .dd-kind{ font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-faint); }
+  .dd-need{
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  .dd-need.req{ border-color: var(--accent-dim); color: var(--accent-bright); background: var(--accent-wash); }
+  .dd-need.cond{ border-style: dashed; }
+  .dd-chev{
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid var(--text-faint);
+    border-bottom: 2px solid var(--text-faint);
+    transform: rotate(45deg) translateY(-2px);
+    transition: transform var(--motion-fast);
+    justify-self: center;
+  }
+  details[open] > summary .dd-chev{ transform: rotate(-135deg) translateY(-2px); }
+  .dd-body{ padding: 0 0.9rem 0.9rem; }
+  .dd-body > p{ margin: 0 0 0.7rem; color: var(--text-dim); font-size: 0.93rem; }
+  .dd-facts{ margin: 0; display: grid; gap: 0.45rem; }
+  .dd-types .dd-facts{ padding: 0 0.9rem 0.9rem; }
+  .dd-facts > div{ display: grid; grid-template-columns: 8.5rem 1fr; gap: 0.8rem; }
+  .dd-facts dt{
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    padding-top: 0.2rem;
+  }
+  .dd-facts dd{ margin: 0; font-size: 0.9rem; }
+  .dd-facts ul{ margin: 0; padding-left: 1.1rem; display: grid; gap: 0.2rem; }
+  .dd-values{ display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .dd-values .status-chip{ font-size: 0.7rem; }
+  .dd-none{ color: var(--text-dim); font-style: italic; }
+  .dd-none[hidden]{ display: none; }
+  @media (max-width: 640px){
+    .dd-field summary{ grid-template-columns: minmax(0, 1fr) auto 1rem; gap: 0.5rem; }
+    .dd-kind{ display: none; }
+    .dd-facts > div{ grid-template-columns: 1fr; gap: 0.1rem; }
+    .dd-row{ flex-direction: column; }
+    .dd-toggle{ align-self: flex-start; }
+  }
 </style>
 </head>
 <body>
@@ -1405,7 +1709,7 @@
   <div>
     <p class="eyebrow">SPARC — System Planning</p>
     <h1>SPARC <em>Data</em></h1>
-    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the statuses every grant moves through, who owns each module, the three phases of development, and the five values we're holding it to.</p>
+    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the statuses every grant moves through, who owns each module, the three phases of development, the Phase 1 plan, every field in the data dictionary, and the five values we're holding it to.</p>
     <div class="stat-row">
       <div class="stat-chip"><b>1</b><span>System</span></div>
       <div class="stat-chip"><b>5</b><span>Modules</span></div>
@@ -1983,10 +2287,119 @@
     </ol>
   </section>
 
+  <!-- ============ PHASE 1 PLAN ============ -->
+  <section class="block" id="phase-1">
+    <div class="block-heading">
+      <span class="idx">05</span>
+      <h2>Phase 1 Plan</h2>
+    </div>
+    <p class="block-intro">The shared frame is built. Next, each owner builds their module's page on it, following that module's outline. What you've already built stays: each outline starts with what carries forward.</p>
+
+    <ol class="p1-progress reveal" aria-label="Where Phase 1 stands">
+      <li class="done"><span class="p1-dot" aria-hidden="true"></span>Plan and outlines</li>
+      <li class="done"><span class="p1-dot" aria-hidden="true"></span>Shared frame</li>
+      <li class="now"><span class="p1-dot" aria-hidden="true"></span>Module pages <b>Now</b></li>
+    </ol>
+
+    <div class="p1-stack reveal" role="list" aria-label="How BANISTER fits together">
+      <div class="p1-layer mine" role="listitem">
+        <div class="p1-where"><span class="k">You build</span><strong>Your module</strong><code>modules/&lt;yours&gt;/</code></div>
+        <ul class="p1-parts">
+          <li>Pre-Award <span>Jane</span></li>
+          <li>Post-Award <span>Owen</span></li>
+          <li>Reporting <span>Santhosh</span></li>
+          <li>Forms <span>Josi</span></li>
+          <li>Calendar <span>Dohyeon</span></li>
+        </ul>
+      </div>
+      <div class="p1-layer" role="listitem">
+        <div class="p1-where"><span class="k">Built for you</span><strong>The frame</strong><code>ui/</code></div>
+        <ul class="p1-parts">
+          <li>Every grant, loaded once</li>
+          <li>Grant Data View</li>
+          <li>My Projects</li>
+          <li>Cards, tabs, grid, pop-up</li>
+        </ul>
+      </div>
+      <div class="p1-layer" role="listitem">
+        <div class="p1-where"><span class="k">Built for you</span><strong>The server</strong><code>core/</code></div>
+        <ul class="p1-parts">
+          <li>Saves and status rules</li>
+          <li>Change log</li>
+          <li>PDFs, Drive, calendar sync</li>
+        </ul>
+      </div>
+      <div class="p1-layer" role="listitem">
+        <div class="p1-where"><span class="k">Behind it</span><strong>Google</strong></div>
+        <ul class="p1-parts">
+          <li>Backend sheet</li>
+          <li>Drive</li>
+          <li>BANISTER calendar</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="p1-next reveal">
+      <h3>Your next part</h3>
+      <ol class="p1-steps">
+        <li><b>Read your outline.</b> It says exactly what your page shows and when it's done.</li>
+        <li><b>Make a branch.</b> Name it after the change, like <code>pre-award-cards</code>. Never work on <code>main</code>.</li>
+        <li><b>Build in your folder.</b> Only <code>Page.html</code> and <code>Server.js</code>, using the frame's pieces. Need something in <code>ui/</code> or <code>core/</code>? Ask Nathan.</li>
+        <li><b>Try it in your copy.</b> Push to your own copy of the app. Check light mode, dark mode and phone width.</li>
+        <li><b>Open a pull request.</b> Reviewers: Nathan and the next owner in the rotation.</li>
+      </ol>
+      <p class="p1-done"><b>You're done</b> when everything under “Done when” in your outline is true. Not sure about something? Ask in your pull request. That's what reviews are for.</p>
+      <p class="p1-tip">Using Claude Code? It reads <code>CLAUDE.md</code> on its own. Start with: “Build my page from my module's <code>OUTLINE.md</code>.”</p>
+      <div class="p1-foot">
+        <span class="k">Your outline</span>
+        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/pre-award/OUTLINE.md">Pre-Award</a>
+        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/post-award/OUTLINE.md">Post-Award</a>
+        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/reporting/OUTLINE.md">Reporting</a>
+        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/forms/OUTLINE.md">Forms</a>
+        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/calendar/OUTLINE.md">Calendar</a>
+      </div>
+      <details class="p1-copy">
+        <summary>How to set up your copy</summary>
+        <ol>
+          <li>In the Apps Script project, open Overview and choose Make a copy.</li>
+          <li>Put the copy's Script ID (Project Settings) in your local <code>.clasp.json</code>. Don't commit that change.</li>
+          <li>Run <code>setup()</code> once in the copy, then <code>clasp push</code>.</li>
+          <li>Open the copy's link from Deploy → Test deployments.</li>
+        </ol>
+      </details>
+    </div>
+  </section>
+
+  <!-- ============ DATA DICTIONARY ============ -->
+  <section class="block" id="dictionary">
+    <div class="block-heading">
+      <span class="idx">06</span>
+      <h2>Data Dictionary</h2>
+    </div>
+    <p class="block-intro">Every grant in BANISTER carries these 40 fields. Click a field to see its code name, what goes in it, when a grant needs it, and the rules BANISTER checks.</p>
+
+    <div class="dd">
+      <div class="dd-tools" hidden>
+        <div class="dd-pills" role="group" aria-label="Show fields from"><button type="button" class="dd-pill" aria-pressed="true" data-dd-group="all">All <b>40</b></button><button type="button" class="dd-pill" aria-pressed="false" data-dd-group="id">ID <b>1</b></button><button type="button" class="dd-pill" aria-pressed="false" data-dd-group="info">Grant Information <b>14</b></button><button type="button" class="dd-pill" aria-pressed="false" data-dd-group="pre">Pre-Award <b>6</b></button><button type="button" class="dd-pill" aria-pressed="false" data-dd-group="post">Post-Award <b>9</b></button><button type="button" class="dd-pill" aria-pressed="false" data-dd-group="admin">Administrative Details <b>10</b></button></div>
+        <div class="dd-row">
+          <label class="dd-search"><span class="sr">Search the fields</span><input type="search" placeholder="Search names, values or code names" autocomplete="off"></label>
+          <button type="button" class="dd-toggle" data-dd-open>Open all</button>
+        </div>
+        <p class="dd-count k" aria-live="polite">Showing all 40 fields</p>
+      </div>
+      <div class="dd-group reveal" data-group="id"><h3 class="dd-group-h"><span>ID</span><span class="k">1 field</span></h3><details class="dd-field" data-group="id" data-words="banister id banister_id auto generated set by banister the grant&#x27;s record id. links, the change log and my projects all use it. ban- and 8 random letters and digits  made when the grant is created and never changes. "><summary><span class="dd-name">BANISTER ID</span><span class="dd-kind">Auto Generated</span><span class="dd-need cond">Set by BANISTER</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The grant&#x27;s record id. Links, the change log and My Projects all use it.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>banister_id</code></dd></div><div><dt>Entry type</dt><dd>Auto Generated: BANISTER makes it; nobody types it.</dd></div><div><dt>Needed</dt><dd>Set by BANISTER</dd></div><div><dt>Format</dt><dd>BAN- and 8 random letters and digits</dd></div><div><dt>Rules</dt><dd><ul><li>Made when the grant is created and never changes.</li></ul></dd></div></dl></div></details></div><div class="dd-group reveal" data-group="info"><h3 class="dd-group-h"><span>Grant Information</span><span class="k">14 fields</span></h3><details class="dd-field" data-group="info" data-words="grant code grant_code pattern needed to create the grant&#x27;s code as people type and see it. f00000000 · s00000000 · o00000000  f, s or o, then 8 digits. banister warns when the letter doesn’t match the funding source: f federal, s state, o private/other. two grants may share a code, with a warning; the banister id keeps them apart. "><summary><span class="dd-name">Grant Code</span><span class="dd-kind">Pattern</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The grant&#x27;s code as people type and see it.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>grant_code</code></dd></div><div><dt>Entry type</dt><dd>Pattern: Typed, and must match a pattern.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Format</dt><dd>F00000000 · S00000000 · O00000000</dd></div><div><dt>Rules</dt><dd><ul><li>F, S or O, then 8 digits.</li><li>BANISTER warns when the letter doesn’t match the Funding Source: F Federal, S State, O Private/Other.</li><li>Two grants may share a code, with a warning; the BANISTER ID keeps them apart.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="url url web url link optional a web link for the grant, such as its drive folder.   must be a full link that starts with https://. "><summary><span class="dd-name">URL</span><span class="dd-kind">Web URL Link</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>A web link for the grant, such as its Drive folder.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>url</code></dd></div><div><dt>Entry type</dt><dd>Web URL Link: A full link that starts with https://.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Rules</dt><dd><ul><li>Must be a full link that starts with https://.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="status status validation set by status moves where the grant is in its life.  in development submitted selected awarded in closeout completed cancelled denied dormant withdrawn declined terminated changes only through status moves: the chart’s moves, plus one step back to fix a mistake. new grants start at in development. "><summary><span class="dd-name">Status</span><span class="dd-kind">Validation</span><span class="dd-need cond">Set by status moves</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Where the grant is in its life.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>status</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Set by status moves</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">In Development</span><span class="status-chip">Submitted</span><span class="status-chip">Selected</span><span class="status-chip">Awarded</span><span class="status-chip">In Closeout</span><span class="status-chip">Completed</span><span class="status-chip">Cancelled</span><span class="status-chip">Denied</span><span class="status-chip">Dormant</span><span class="status-chip">Withdrawn</span><span class="status-chip">Declined</span><span class="status-chip">Terminated</span></span></dd></div><div><dt>Rules</dt><dd><ul><li>Changes only through status moves: the chart’s moves, plus one step back to fix a mistake.</li><li>New grants start at In Development.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="grant title grant_title free entry needed to create the grant&#x27;s name.    "><summary><span class="dd-name">Grant Title</span><span class="dd-kind">Free Entry</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The grant&#x27;s name.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>grant_title</code></dd></div><div><dt>Entry type</dt><dd>Free Entry: Typed freely.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="description description free entry optional a sentence or two on what the project does.    "><summary><span class="dd-name">Description</span><span class="dd-kind">Free Entry</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>A sentence or two on what the project does.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>description</code></dd></div><div><dt>Entry type</dt><dd>Free Entry: Typed freely.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="principal investigator principal_investigator limited entry needed to create the lead investigator. from the personnel sheet   "><summary><span class="dd-name">Principal Investigator</span><span class="dd-kind">Limited Entry</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The lead investigator.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>principal_investigator</code></dd></div><div><dt>Entry type</dt><dd>Limited Entry: Picked from the Personnel list.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Format</dt><dd>From the Personnel sheet</dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="co investigators co_investigators limited entry optional the other investigators. from the personnel sheet; a list of names   "><summary><span class="dd-name">Co Investigators</span><span class="dd-kind">Limited Entry</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The other investigators.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>co_investigators</code></dd></div><div><dt>Entry type</dt><dd>Limited Entry: Picked from the Personnel list.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Format</dt><dd>From the Personnel sheet; a list of names</dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="department department auto fill needed to create the investigators&#x27; departments. from the investigators; a list, the pi’s first   "><summary><span class="dd-name">Department</span><span class="dd-kind">Auto Fill</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The investigators&#x27; departments.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>department</code></dd></div><div><dt>Entry type</dt><dd>Auto Fill: Filled in from other fields.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Format</dt><dd>From the investigators; a list, the PI’s first</dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="unit unit auto fill needed to create the colleges or divisions those departments belong to. from the departments; a list  reports count each grant once, for the pi’s unit. "><summary><span class="dd-name">Unit</span><span class="dd-kind">Auto Fill</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The colleges or divisions those departments belong to.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>unit</code></dd></div><div><dt>Entry type</dt><dd>Auto Fill: Filled in from other fields.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Format</dt><dd>From the departments; a list</dd></div><div><dt>Rules</dt><dd><ul><li>Reports count each grant once, for the PI’s unit.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="sponsor sponsor assisted entry needed to create who funds the grant. from the sponsors sheet   "><summary><span class="dd-name">Sponsor</span><span class="dd-kind">Assisted Entry</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Who funds the grant.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>sponsor</code></dd></div><div><dt>Entry type</dt><dd>Assisted Entry: Suggested from a list; new values are allowed.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Format</dt><dd>From the Sponsors sheet</dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="prime sponsor prime_sponsor assisted entry for pass-through money the original funder, when the money passes through another sponsor. from the sponsors sheet  needed to create a grant whose funding type is subaward or federal flow through. "><summary><span class="dd-name">Prime Sponsor</span><span class="dd-kind">Assisted Entry</span><span class="dd-need cond">For pass-through money</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The original funder, when the money passes through another sponsor.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>prime_sponsor</code></dd></div><div><dt>Entry type</dt><dd>Assisted Entry: Suggested from a list; new values are allowed.</dd></div><div><dt>Needed</dt><dd>For pass-through money</dd></div><div><dt>Format</dt><dd>From the Sponsors sheet</dd></div><div><dt>Rules</dt><dd><ul><li>Needed to create a grant whose Funding Type is Subaward or Federal Flow Through.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="funding source funding_source validation needed to create where the money comes from.  federal state private/other  "><summary><span class="dd-name">Funding Source</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Where the money comes from.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>funding_source</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">Federal</span><span class="status-chip">State</span><span class="status-chip">Private/Other</span></span></dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="funding type funding_type validation needed to create how the money reaches suu.  award subaward federal flow through  "><summary><span class="dd-name">Funding Type</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>How the money reaches SUU.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>funding_type</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">Award</span><span class="status-chip">Subaward</span><span class="status-chip">Federal Flow Through</span></span></dd></div></dl></div></details><details class="dd-field" data-group="info" data-words="category category validation needed to create the kind of work the grant pays for.  10 - instruction 20 - research 30 - public service 40 - academic support 42 - library 50 - student services 52 - athletics 60 - institutional support 80 - student financial aid  "><summary><span class="dd-name">Category</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed to create</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The kind of work the grant pays for.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>category</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed to create</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">10 - Instruction</span><span class="status-chip">20 - Research</span><span class="status-chip">30 - Public Service</span><span class="status-chip">40 - Academic Support</span><span class="status-chip">42 - Library</span><span class="status-chip">50 - Student Services</span><span class="status-chip">52 - Athletics</span><span class="status-chip">60 - Institutional Support</span><span class="status-chip">80 - Student Financial Aid</span></span></dd></div></dl></div></details></div><div class="dd-group reveal" data-group="pre"><h3 class="dd-group-h"><span>Pre-Award</span><span class="k">6 fields</span></h3><details class="dd-field" data-group="pre" data-words="due date due_date date, time &amp; zone optional when the proposal is due to the sponsor. yyyy-mm-ddthh:mm±hh:mm, for example 2026-12-10t17:00-05:00 for 5 pm eastern  shows on the calendar in blue while the proposal is in development or submitted. "><summary><span class="dd-name">Due Date</span><span class="dd-kind">Date, Time &amp; Zone</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>When the proposal is due to the sponsor.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>due_date</code></dd></div><div><dt>Entry type</dt><dd>Date, Time &amp; Zone: A date, a time and a US time zone.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Format</dt><dd>YYYY-MM-DDThh:mm±hh:mm, for example 2026-12-10T17:00-05:00 for 5 PM Eastern</dd></div><div><dt>Rules</dt><dd><ul><li>Shows on the Calendar in blue while the proposal is In Development or Submitted.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="pre" data-words="proposal identification number proposal_identification_number free entry optional the sponsor&#x27;s or portal&#x27;s number for the proposal.    "><summary><span class="dd-name">Proposal Identification Number</span><span class="dd-kind">Free Entry</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The sponsor&#x27;s or portal&#x27;s number for the proposal.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>proposal_identification_number</code></dd></div><div><dt>Entry type</dt><dd>Free Entry: Typed freely.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div></dl></div></details><details class="dd-field" data-group="pre" data-words="proposal type proposal_type validation needed at submitted what kind of proposal it is.  preliminary proposal new proposal non-competing continuation renewal resubmission  "><summary><span class="dd-name">Proposal Type</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>What kind of proposal it is.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>proposal_type</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">Preliminary Proposal</span><span class="status-chip">New Proposal</span><span class="status-chip">Non-Competing Continuation</span><span class="status-chip">Renewal</span><span class="status-chip">Resubmission</span></span></dd></div></dl></div></details><details class="dd-field" data-group="pre" data-words="submission date submission_date date needed at submitted when the proposal went to the sponsor. yyyy-mm-dd  places the proposal in a reporting period. "><summary><span class="dd-name">Submission Date</span><span class="dd-kind">Date</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>When the proposal went to the sponsor.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>submission_date</code></dd></div><div><dt>Entry type</dt><dd>Date: A date, YYYY-MM-DD.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div><div><dt>Format</dt><dd>YYYY-MM-DD</dd></div><div><dt>Rules</dt><dd><ul><li>Places the proposal in a reporting period.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="pre" data-words="amount requested amount_requested currency needed at submitted what the proposal asks for.    "><summary><span class="dd-name">Amount Requested</span><span class="dd-kind">Currency</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>What the proposal asks for.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>amount_requested</code></dd></div><div><dt>Entry type</dt><dd>Currency: Dollars.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div></dl></div></details><details class="dd-field" data-group="pre" data-words="proposal contacts proposal_contacts json optional the sponsor&#x27;s contacts for the proposal.   banister warns about an email that doesn’t look right. name · email · note"><summary><span class="dd-name">Proposal Contacts</span><span class="dd-kind">JSON</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The sponsor&#x27;s contacts for the proposal.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>proposal_contacts</code></dd></div><div><dt>Entry type</dt><dd>JSON: A list of rows, each with the sub-fields shown.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Each row</dt><dd>name · email · note</dd></div><div><dt>Rules</dt><dd><ul><li>BANISTER warns about an email that doesn’t look right.</li></ul></dd></div></dl></div></details></div><div class="dd-group reveal" data-group="post"><h3 class="dd-group-h"><span>Post-Award</span><span class="k">9 fields</span></h3><details class="dd-field" data-group="post" data-words="fund number fund_number pattern needed at awarded the award&#x27;s fund in banner. 100000 · 200000 · 300000  6 digits that start with 1, 2 or 3. banister warns when the first digit doesn’t match the funding source: 1 federal, 2 state, 3 private/other. "><summary><span class="dd-name">Fund Number</span><span class="dd-kind">Pattern</span><span class="dd-need req">Needed at Awarded</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The award&#x27;s fund in Banner.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>fund_number</code></dd></div><div><dt>Entry type</dt><dd>Pattern: Typed, and must match a pattern.</dd></div><div><dt>Needed</dt><dd>Needed at Awarded</dd></div><div><dt>Format</dt><dd>100000 · 200000 · 300000</dd></div><div><dt>Rules</dt><dd><ul><li>6 digits that start with 1, 2 or 3.</li><li>BANISTER warns when the first digit doesn’t match the Funding Source: 1 Federal, 2 State, 3 Private/Other.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="award identification number award_identification_number free entry optional the sponsor&#x27;s number for the award.    "><summary><span class="dd-name">Award Identification Number</span><span class="dd-kind">Free Entry</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The sponsor&#x27;s number for the award.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>award_identification_number</code></dd></div><div><dt>Entry type</dt><dd>Free Entry: Typed freely.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="prime award identification number prime_award_identification_number free entry optional the prime sponsor&#x27;s number for the award, for pass-through money.    "><summary><span class="dd-name">Prime Award Identification Number</span><span class="dd-kind">Free Entry</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The prime sponsor&#x27;s number for the award, for pass-through money.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>prime_award_identification_number</code></dd></div><div><dt>Entry type</dt><dd>Free Entry: Typed freely.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="awarded date awarded_date date needed at awarded when the award was made. yyyy-mm-dd  places the award in a reporting period. banister warns when it’s before the submission date. "><summary><span class="dd-name">Awarded Date</span><span class="dd-kind">Date</span><span class="dd-need req">Needed at Awarded</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>When the award was made.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>awarded_date</code></dd></div><div><dt>Entry type</dt><dd>Date: A date, YYYY-MM-DD.</dd></div><div><dt>Needed</dt><dd>Needed at Awarded</dd></div><div><dt>Format</dt><dd>YYYY-MM-DD</dd></div><div><dt>Rules</dt><dd><ul><li>Places the award in a reporting period.</li><li>BANISTER warns when it’s before the Submission Date.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="amount awarded amount_awarded currency needed at awarded what the sponsor awarded.    "><summary><span class="dd-name">Amount Awarded</span><span class="dd-kind">Currency</span><span class="dd-need req">Needed at Awarded</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>What the sponsor awarded.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>amount_awarded</code></dd></div><div><dt>Entry type</dt><dd>Currency: Dollars.</dd></div><div><dt>Needed</dt><dd>Needed at Awarded</dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="award contacts award_contacts json optional the sponsor&#x27;s contacts for the award.    name · email · note"><summary><span class="dd-name">Award Contacts</span><span class="dd-kind">JSON</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The sponsor&#x27;s contacts for the award.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>award_contacts</code></dd></div><div><dt>Entry type</dt><dd>JSON: A list of rows, each with the sub-fields shown.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Each row</dt><dd>name · email · note</dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="start date start_date date needed at awarded when the award period starts. yyyy-mm-dd   "><summary><span class="dd-name">Start Date</span><span class="dd-kind">Date</span><span class="dd-need req">Needed at Awarded</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>When the award period starts.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>start_date</code></dd></div><div><dt>Entry type</dt><dd>Date: A date, YYYY-MM-DD.</dd></div><div><dt>Needed</dt><dd>Needed at Awarded</dd></div><div><dt>Format</dt><dd>YYYY-MM-DD</dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="end date end_date date or ongoing needed at awarded when the award period ends. yyyy-mm-dd, or ongoing  never before the start date. shows on the calendar in yellow, unless it’s ongoing. post-award cards show an end badge from 120 days out. "><summary><span class="dd-name">End Date</span><span class="dd-kind">Date or Ongoing</span><span class="dd-need req">Needed at Awarded</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>When the award period ends.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>end_date</code></dd></div><div><dt>Entry type</dt><dd>Date or Ongoing: A date, or the word Ongoing.</dd></div><div><dt>Needed</dt><dd>Needed at Awarded</dd></div><div><dt>Format</dt><dd>YYYY-MM-DD, or Ongoing</dd></div><div><dt>Rules</dt><dd><ul><li>Never before the Start Date.</li><li>Shows on the Calendar in yellow, unless it’s Ongoing.</li><li>Post-Award cards show an end badge from 120 days out.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="post" data-words="modifications modifications json optional changes made to the award after it was made.    date · amount · note"><summary><span class="dd-name">Modifications</span><span class="dd-kind">JSON</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Changes made to the award after it was made.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>modifications</code></dd></div><div><dt>Entry type</dt><dd>JSON: A list of rows, each with the sub-fields shown.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Each row</dt><dd>date · amount · note</dd></div></dl></div></details></div><div class="dd-group reveal" data-group="admin"><h3 class="dd-group-h"><span>Administrative Details</span><span class="k">10 fields</span></h3><details class="dd-field" data-group="admin" data-words="indirect base indirect_base validation needed at submitted what the indirect rate is charged on.  salaries, wages, and benefits (swb) modified total direct costs (mtdc) total direct costs (tdc) total administrative costs (tac) other  "><summary><span class="dd-name">Indirect Base</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>What the indirect rate is charged on.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>indirect_base</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">Salaries, Wages, and Benefits (SWB)</span><span class="status-chip">Modified Total Direct Costs (MTDC)</span><span class="status-chip">Total Direct Costs (TDC)</span><span class="status-chip">Total Administrative Costs (TAC)</span><span class="status-chip">Other</span></span></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="indirect rate indirect_rate percent needed at submitted the indirect (f&amp;a) rate.   from 0% to 100%. choosing an indirect description fills it in: 45% of swb on campus, 16.3% of swb off campus, 0% for unallowable and not applicable. it can still be changed. "><summary><span class="dd-name">Indirect Rate</span><span class="dd-kind">Percent</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The indirect (F&amp;A) rate.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>indirect_rate</code></dd></div><div><dt>Entry type</dt><dd>Percent: A rate from 0% to 100%.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div><div><dt>Rules</dt><dd><ul><li>From 0% to 100%.</li><li>Choosing an Indirect Description fills it in: 45% of SWB on campus, 16.3% of SWB off campus, 0% for Unallowable and Not Applicable. It can still be changed.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="indirect description indirect_description validation needed at submitted which rate applies, and why.  fully negotiated rate (on-campus) fully negotiated rate (off-campus) sponsor allowed rate limited rate unallowable not applicable  "><summary><span class="dd-name">Indirect Description</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Which rate applies, and why.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>indirect_description</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">Fully Negotiated Rate (On-Campus)</span><span class="status-chip">Fully Negotiated Rate (Off-Campus)</span><span class="status-chip">Sponsor Allowed Rate</span><span class="status-chip">Limited Rate</span><span class="status-chip">Unallowable</span><span class="status-chip">Not Applicable</span></span></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="cost share type cost_share_type validation needed at submitted whether suu shares the cost, and how firmly.  not required mandatory committed voluntary committed voluntary uncommitted  "><summary><span class="dd-name">Cost Share Type</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Whether SUU shares the cost, and how firmly.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>cost_share_type</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">Not Required</span><span class="status-chip">Mandatory Committed</span><span class="status-chip">Voluntary Committed</span><span class="status-chip">Voluntary Uncommitted</span></span></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="matching type matching_type validation when there is cost share what suu’s share is made of.  cash in-kind effort combination other needed at submitted when the cost share type is anything but not required. "><summary><span class="dd-name">Matching Type</span><span class="dd-kind">Validation</span><span class="dd-need cond">When there is cost share</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>What SUU’s share is made of.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>matching_type</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>When there is cost share</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">Cash</span><span class="status-chip">In-Kind</span><span class="status-chip">Effort</span><span class="status-chip">Combination</span><span class="status-chip">Other</span></span></dd></div><div><dt>Rules</dt><dd><ul><li>Needed at Submitted when the Cost Share Type is anything but Not Required.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="cost share amount cost_share_amount currency when there is cost share how much suu shares.   needed at submitted when the cost share type is anything but not required. "><summary><span class="dd-name">Cost Share Amount</span><span class="dd-kind">Currency</span><span class="dd-need cond">When there is cost share</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>How much SUU shares.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>cost_share_amount</code></dd></div><div><dt>Entry type</dt><dd>Currency: Dollars.</dd></div><div><dt>Needed</dt><dd>When there is cost share</dd></div><div><dt>Rules</dt><dd><ul><li>Needed at Submitted when the Cost Share Type is anything but Not Required.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="location location validation needed at submitted where the work happens.  on-campus off-campus banister warns when it disagrees with a fully negotiated rate’s campus. "><summary><span class="dd-name">Location</span><span class="dd-kind">Validation</span><span class="dd-need req">Needed at Submitted</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Where the work happens.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>location</code></dd></div><div><dt>Entry type</dt><dd>Validation: Picked from a fixed list.</dd></div><div><dt>Needed</dt><dd>Needed at Submitted</dd></div><div><dt>Allowed values</dt><dd><span class="dd-values"><span class="status-chip">On-Campus</span><span class="status-chip">Off-Campus</span></span></dd></div><div><dt>Rules</dt><dd><ul><li>BANISTER warns when it disagrees with a Fully Negotiated Rate’s campus.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="external collaborators external_collaborators json optional outside partners, vendors and subawards.    name · type (subaward, vendor or other) · amount · note"><summary><span class="dd-name">External Collaborators</span><span class="dd-kind">JSON</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Outside partners, vendors and subawards.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>external_collaborators</code></dd></div><div><dt>Entry type</dt><dd>JSON: A list of rows, each with the sub-fields shown.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Each row</dt><dd>name · type (subaward, vendor or other) · amount · note</dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="reports reports json optional the reports the sponsor expects.   each report with a due date shows on the calendar in red; a turned-in one shows as done. banister warns about a report with no due date. name · type (progress, financial or other) · due_date · submission_date · note"><summary><span class="dd-name">Reports</span><span class="dd-kind">JSON</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>The reports the sponsor expects.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>reports</code></dd></div><div><dt>Entry type</dt><dd>JSON: A list of rows, each with the sub-fields shown.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Each row</dt><dd>name · type (progress, financial or other) · due_date · submission_date · note</dd></div><div><dt>Rules</dt><dd><ul><li>Each report with a due date shows on the Calendar in red; a turned-in one shows as done.</li><li>BANISTER warns about a report with no due date.</li></ul></dd></div></dl></div></details><details class="dd-field" data-group="admin" data-words="comments comments json optional notes from the sparc team.    name · date · comment"><summary><span class="dd-name">Comments</span><span class="dd-kind">JSON</span><span class="dd-need opt">Optional</span><span class="dd-chev" aria-hidden="true"></span></summary><div class="dd-body"><p>Notes from the SPARC team.</p><dl class="dd-facts"><div><dt>In code</dt><dd><code>comments</code></dd></div><div><dt>Entry type</dt><dd>JSON: A list of rows, each with the sub-fields shown.</dd></div><div><dt>Needed</dt><dd>Optional</dd></div><div><dt>Each row</dt><dd>name · date · comment</dd></div></dl></div></details></div>
+      <p class="dd-none" hidden>No fields match that search.</p>
+      <details class="dd-types">
+        <summary><span class="dd-name">What the entry types mean</span><span class="dd-chev" aria-hidden="true"></span></summary>
+        <dl class="dd-facts"><div><dt>Auto Generated</dt><dd>BANISTER makes it; nobody types it.</dd></div><div><dt>Pattern</dt><dd>Typed, and must match a pattern.</dd></div><div><dt>Web URL Link</dt><dd>A full link that starts with https://.</dd></div><div><dt>Validation</dt><dd>Picked from a fixed list.</dd></div><div><dt>Free Entry</dt><dd>Typed freely.</dd></div><div><dt>Limited Entry</dt><dd>Picked from the Personnel list.</dd></div><div><dt>Auto Fill</dt><dd>Filled in from other fields.</dd></div><div><dt>Assisted Entry</dt><dd>Suggested from a list; new values are allowed.</dd></div><div><dt>Date</dt><dd>A date, YYYY-MM-DD.</dd></div><div><dt>Date, Time &amp; Zone</dt><dd>A date, a time and a US time zone.</dd></div><div><dt>Date or Ongoing</dt><dd>A date, or the word Ongoing.</dd></div><div><dt>Currency</dt><dd>Dollars.</dd></div><div><dt>Percent</dt><dd>A rate from 0% to 100%.</dd></div><div><dt>JSON</dt><dd>A list of rows, each with the sub-fields shown.</dd></div></dl>
+      </details>
+    </div>
+  </section>
+
   <!-- ============ VALUES ============ -->
   <section class="block" id="values">
     <div class="block-heading">
-      <span class="idx">05</span>
+      <span class="idx">07</span>
       <h2>Values</h2>
     </div>
     <ol class="values reveal">
@@ -2192,5 +2605,56 @@
 })();
 </script>
 
+
+<script>
+/* Data dictionary: group pills, search and Open all. */
+(function(){
+  var dd = document.querySelector('.dd');
+  if (!dd) return;
+  var tools = dd.querySelector('.dd-tools');
+  var input = dd.querySelector('.dd-search input');
+  var pills = dd.querySelectorAll('.dd-pill');
+  var toggle = dd.querySelector('.dd-toggle');
+  var count = dd.querySelector('.dd-count');
+  var none = dd.querySelector('.dd-none');
+  var groups = dd.querySelectorAll('.dd-group');
+  var group = 'all';
+  tools.hidden = false;
+
+  /* Shows only the fields in the chosen group that match the search. */
+  function apply(){
+    var q = input.value.trim().toLowerCase();
+    var shown = 0;
+    groups.forEach(function(g){
+      var any = 0;
+      g.querySelectorAll('.dd-field').forEach(function(f){
+        var ok = (group === 'all' || f.dataset.group === group) && (!q || f.dataset.words.indexOf(q) !== -1);
+        f.hidden = !ok;
+        if (ok) any++;
+      });
+      g.hidden = !any;
+      shown += any;
+    });
+    none.hidden = shown > 0;
+    count.textContent = shown === 40 ? 'Showing all 40 fields' : 'Showing ' + shown + ' of 40 fields';
+  }
+
+  pills.forEach(function(p){
+    p.addEventListener('click', function(){
+      group = p.dataset.ddGroup;
+      pills.forEach(function(o){ o.setAttribute('aria-pressed', String(o === p)); });
+      apply();
+    });
+  });
+  input.addEventListener('input', apply);
+
+  /* Opens or closes every field that's showing. */
+  toggle.addEventListener('click', function(){
+    var open = toggle.textContent === 'Open all';
+    dd.querySelectorAll('.dd-field:not([hidden])').forEach(function(f){ f.open = open; });
+    toggle.textContent = open ? 'Close all' : 'Open all';
+  });
+})();
+</script>
 </body>
 </html>
