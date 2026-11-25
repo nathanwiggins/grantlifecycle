@@ -1313,105 +1313,8 @@
     .nav-pill{ font-size: 0.62rem; padding: 0.35rem 0.6rem; }
   }
 
-  /* ---------- Phase 1 plan ---------- */
-  .p1-progress{
-    list-style: none;
-    margin: 0 0 1.25rem;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text-dim);
-  }
-  .p1-progress li{ display: flex; align-items: center; gap: 0.5rem; }
-  .p1-dot{
-    width: 0.8rem;
-    height: 0.8rem;
-    border-radius: 50%;
-    border: 2px solid var(--accent);
-    flex-shrink: 0;
-  }
-  .p1-progress .done .p1-dot{ background: var(--accent); }
-  .p1-progress .now{ color: var(--text); }
-  .p1-progress .now .p1-dot{ box-shadow: 0 0 0 4px var(--accent-wash); }
-  .p1-progress b{
-    font-weight: 600;
-    font-size: 0.64rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--on-accent);
-    background: var(--accent);
-    border-radius: 999px;
-    padding: 0.1rem 0.5rem;
-  }
-
-  .p1-stack{
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 1.25rem;
-  }
-  .p1-layer{
-    display: grid;
-    grid-template-columns: 11rem 1fr;
-    align-items: center;
-    gap: 0.6rem 1.2rem;
-    padding: 0.85rem 1.2rem;
-    border-top: 1px solid var(--border);
-  }
-  .p1-layer:first-child{ border-top: 0; }
-  .p1-layer.mine{ background: var(--accent-wash); box-shadow: inset 3px 0 0 var(--accent); }
-  .p1-layer.mine .k{ color: var(--accent-bright); }
-  .p1-where .k{ margin-bottom: 0.1rem; }
-  .p1-where strong{ display: block; font-weight: 600; line-height: 1.3; }
-  .p1-where code{ font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-dim); }
-  .p1-parts{
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-  .p1-parts li{
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    padding: 0.22rem 0.65rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: var(--surface-2);
-    color: var(--text-dim);
-  }
-  .p1-layer.mine .p1-parts li{ color: var(--text); border-color: var(--accent-dim); background: var(--surface); }
-  .p1-parts li span{ color: var(--text-faint); margin-left: 0.3rem; }
-  .p1-layer.mine .p1-parts li span{ color: var(--accent-bright); }
-
-  .p1-next{
-    position: relative;
-    overflow: hidden;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.2rem 1.3rem 1.1rem;
-  }
-  .p1-next::before{
-    content: "";
-    position: absolute;
-    left: 0; right: 0; top: 0;
-    height: 3px;
-    background: var(--accent);
-  }
-  .p1-next h3{
-    font-family: var(--font-display);
-    font-size: 1.05rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    margin: 0 0 0.8rem;
-  }
-  .p1-next code, .dd code{
+  /* ---------- Data dictionary ---------- */
+  .dd code{
     font-family: var(--font-mono);
     font-size: 0.84em;
     padding: 0.05rem 0.35rem;
@@ -1419,84 +1322,6 @@
     background: var(--surface-2);
     border: 1px solid var(--border);
   }
-  .p1-steps{
-    list-style: none;
-    counter-reset: step;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 0.55rem;
-  }
-  .p1-steps li{
-    counter-increment: step;
-    position: relative;
-    padding-left: 2.2rem;
-    font-size: 0.94rem;
-    color: var(--text-dim);
-  }
-  .p1-steps li::before{
-    content: counter(step);
-    position: absolute;
-    left: 0;
-    top: 0.1rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 50%;
-    background: var(--accent);
-    color: var(--on-accent);
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .p1-steps b{ color: var(--text); font-weight: 600; }
-  .p1-done{
-    margin: 1rem 0 0;
-    padding-top: 0.9rem;
-    border-top: 1px solid var(--border);
-    font-size: 0.94rem;
-    color: var(--text-dim);
-  }
-  .p1-done b{ color: var(--accent-bright); }
-  .p1-tip{ margin: 0.4rem 0 0; font-size: 0.86rem; color: var(--text-faint); }
-  .p1-foot{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.4rem;
-    margin-top: 0.9rem;
-  }
-  .p1-foot .k{ margin: 0 0.3rem 0 0; }
-  .p1-foot a{
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    text-decoration: none;
-    color: var(--text);
-    padding: 0.22rem 0.7rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    transition: border-color var(--motion-fast), color var(--motion-fast);
-  }
-  .p1-foot a::after{ content: " →"; color: var(--accent-bright); }
-  .p1-foot a:hover, .p1-foot a:focus-visible{ border-color: var(--accent); color: var(--accent-bright); }
-  .p1-copy{ margin-top: 0.8rem; font-size: 0.88rem; color: var(--text-dim); }
-  .p1-copy summary{
-    cursor: pointer;
-    width: fit-content;
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-    color: var(--text-faint);
-  }
-  .p1-copy summary:hover{ color: var(--accent-bright); }
-  .p1-copy ol{ margin: 0.5rem 0 0; padding-left: 1.3rem; display: grid; gap: 0.25rem; }
-  @media (max-width: 640px){
-    .p1-layer{ grid-template-columns: 1fr; padding: 0.8rem 1rem; }
-    .p1-next{ padding: 1rem 1rem 0.95rem; }
-  }
-
-  /* ---------- Data dictionary ---------- */
   .sr{ position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .dd-tools{ display: grid; gap: 0.7rem; margin-bottom: 1.2rem; }
   .dd-tools[hidden]{ display: none; }
@@ -1709,7 +1534,7 @@
   <div>
     <p class="eyebrow">SPARC — System Planning</p>
     <h1>SPARC <em>Data</em></h1>
-    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the statuses every grant moves through, who owns each module, the three phases of development, the Phase 1 plan, every field in the data dictionary, and the five values we're holding it to.</p>
+    <p class="lede">The plan from our whiteboard brainstorm, cleaned up: the new system we're building, how it connects to the tools SPARC already uses, the statuses every grant moves through, who owns each module, the three phases of development, every field in the data dictionary, and the five values we're holding it to.</p>
     <div class="stat-row">
       <div class="stat-chip"><b>1</b><span>System</span></div>
       <div class="stat-chip"><b>5</b><span>Modules</span></div>
@@ -2287,93 +2112,10 @@
     </ol>
   </section>
 
-  <!-- ============ PHASE 1 PLAN ============ -->
-  <section class="block" id="phase-1">
-    <div class="block-heading">
-      <span class="idx">05</span>
-      <h2>Phase 1 Plan</h2>
-    </div>
-    <p class="block-intro">The shared frame is built. Next, each owner builds their module's page on it, following that module's outline. What you've already built stays: each outline starts with what carries forward.</p>
-
-    <ol class="p1-progress reveal" aria-label="Where Phase 1 stands">
-      <li class="done"><span class="p1-dot" aria-hidden="true"></span>Plan and outlines</li>
-      <li class="done"><span class="p1-dot" aria-hidden="true"></span>Shared frame</li>
-      <li class="now"><span class="p1-dot" aria-hidden="true"></span>Module pages <b>Now</b></li>
-    </ol>
-
-    <div class="p1-stack reveal" role="list" aria-label="How BANISTER fits together">
-      <div class="p1-layer mine" role="listitem">
-        <div class="p1-where"><span class="k">You build</span><strong>Your module</strong><code>modules/&lt;yours&gt;/</code></div>
-        <ul class="p1-parts">
-          <li>Pre-Award <span>Jane</span></li>
-          <li>Post-Award <span>Owen</span></li>
-          <li>Reporting <span>Santhosh</span></li>
-          <li>Forms <span>Josi</span></li>
-          <li>Calendar <span>Dohyeon</span></li>
-        </ul>
-      </div>
-      <div class="p1-layer" role="listitem">
-        <div class="p1-where"><span class="k">Built for you</span><strong>The frame</strong><code>ui/</code></div>
-        <ul class="p1-parts">
-          <li>Every grant, loaded once</li>
-          <li>Grant Data View</li>
-          <li>My Projects</li>
-          <li>Cards, tabs, grid, pop-up</li>
-        </ul>
-      </div>
-      <div class="p1-layer" role="listitem">
-        <div class="p1-where"><span class="k">Built for you</span><strong>The server</strong><code>core/</code></div>
-        <ul class="p1-parts">
-          <li>Saves and status rules</li>
-          <li>Change log</li>
-          <li>PDFs, Drive, calendar sync</li>
-        </ul>
-      </div>
-      <div class="p1-layer" role="listitem">
-        <div class="p1-where"><span class="k">Behind it</span><strong>Google</strong></div>
-        <ul class="p1-parts">
-          <li>Backend sheet</li>
-          <li>Drive</li>
-          <li>BANISTER calendar</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="p1-next reveal">
-      <h3>Your next part</h3>
-      <ol class="p1-steps">
-        <li><b>Read your outline.</b> It says exactly what your page shows and when it's done.</li>
-        <li><b>Make a branch.</b> Name it after the change, like <code>pre-award-cards</code>. Never work on <code>main</code>.</li>
-        <li><b>Build in your folder.</b> Only <code>Page.html</code> and <code>Server.js</code>, using the frame's pieces. Need something in <code>ui/</code> or <code>core/</code>? Ask Nathan.</li>
-        <li><b>Try it in your copy.</b> Push to your own copy of the app. Check light mode, dark mode and phone width.</li>
-        <li><b>Open a pull request.</b> Reviewers: Nathan and the next owner in the rotation.</li>
-      </ol>
-      <p class="p1-done"><b>You're done</b> when everything under “Done when” in your outline is true. Not sure about something? Ask in your pull request. That's what reviews are for.</p>
-      <p class="p1-tip">Using Claude Code? It reads <code>CLAUDE.md</code> on its own. Start with: “Build my page from my module's <code>OUTLINE.md</code>.”</p>
-      <div class="p1-foot">
-        <span class="k">Your outline</span>
-        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/pre-award/OUTLINE.md">Pre-Award</a>
-        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/post-award/OUTLINE.md">Post-Award</a>
-        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/reporting/OUTLINE.md">Reporting</a>
-        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/forms/OUTLINE.md">Forms</a>
-        <a href="https://github.com/nathanwiggins/banister/blob/main/modules/calendar/OUTLINE.md">Calendar</a>
-      </div>
-      <details class="p1-copy">
-        <summary>How to set up your copy</summary>
-        <ol>
-          <li>In the Apps Script project, open Overview and choose Make a copy.</li>
-          <li>Put the copy's Script ID (Project Settings) in your local <code>.clasp.json</code>. Don't commit that change.</li>
-          <li>Run <code>setup()</code> once in the copy, then <code>clasp push</code>.</li>
-          <li>Open the copy's link from Deploy → Test deployments.</li>
-        </ol>
-      </details>
-    </div>
-  </section>
-
   <!-- ============ DATA DICTIONARY ============ -->
   <section class="block" id="dictionary">
     <div class="block-heading">
-      <span class="idx">06</span>
+      <span class="idx">05</span>
       <h2>Data Dictionary</h2>
     </div>
     <p class="block-intro">Every grant in BANISTER carries these 40 fields. Click a field to see its code name, what goes in it, when a grant needs it, and the rules BANISTER checks.</p>
@@ -2399,7 +2141,7 @@
   <!-- ============ VALUES ============ -->
   <section class="block" id="values">
     <div class="block-heading">
-      <span class="idx">07</span>
+      <span class="idx">06</span>
       <h2>Values</h2>
     </div>
     <ol class="values reveal">
